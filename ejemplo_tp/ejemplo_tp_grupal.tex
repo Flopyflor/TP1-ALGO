@@ -4,15 +4,15 @@
 \usepackage{caratula} % Version modificada para usar las macros de algo1 de ~> https://github.com/bcardiff/dc-tex
 
 
-\titulo{Descripci\'on del tp}
+\titulo{IDK chicos, un título}
 \subtitulo{Subtítulo del tp}
 
 \fecha{\today}
 
-\materia{Materia de la carrera}
-\grupo{Grupo 42}
+\materia{Algoritmos}
+\grupo{losdecompusongentedebien}
 
-\integrante{Apellido, Nombre1}{001/01}{email1@dominio.com}
+\integrante{Allami, Florencia}{484/23}{allamiflorencia@gmail.com}
 \integrante{Apellido, Nombre2}{002/01}{email2@dominio.com}
 \integrante{Apellido, Nombre3}{003/01}{email3@dominio.com}
 \integrante{Apellido, Nombre4}{004/01}{email4@dominio.com}
@@ -26,7 +26,20 @@
 
 \maketitle
 
-\section{Ejemplo de sección}
+\section{Ejercicio 1}
+
+\subsection{1.1}
+
+\begin{proc}{redistribucionDeLosFrutos}{\In recursos : \TLista{\float}, \In cooperan : \TLista{\bool}}{\TLista{\float}}
+	\requiere{\paraTodo[unalinea]{e}{\float}{e \in recursos \implica e \ge 0} \land \longitud{cooperan} = \longitud{recursos}}
+	\asegura{|res| = |recursos| \yLuego \paraTodo{i}{\ent}{0 <= i \le |res| \implicaLuego \IfThenElse{cooperan[i] = \True}{res[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{res[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
+\end{proc}
+
+\aux{fondoComun}{recursos : \TLista{\float}, cooperan : \TLista{\bool}}{\float}{
+	\sum\limits_{i=0}^{\longitud{recursos}-1} \IfThenElse{cooperan[i] = \True}{recursos[i]}{0}
+}
+
+\section{Ejemplos}
 \subsection{Subsección: ambientes comunes de \LaTeX}
 
 Lo principal: las fórmulas. Se puede poner en una linea, como $x_i = x_{i-1} + x_{i-2}$, o ponerse más grande:
