@@ -85,9 +85,9 @@ cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TL
 
 \aux{calcularPlataConFondo}{individuo: \nat, tiempo: \nat, cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: \TLista{\TLista{\float}}}{\float}{ \\
-	\IfThenElse{cooperan[individuo] = \True}{FondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan) \\}
+	\IfThenElse{cooperan[individuo] = \True}{fondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan) \\}
 	{nuevaPlataSinFondo(individuo, tiempo, apuestas, pagos, eventos, trayectorias) \\
-	+ FondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan)}
+	+ fondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan)}
 }
 
 \vspace{5mm}
@@ -103,7 +103,7 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 
 \vspace{5mm}
 
-\aux{FondoDistribuido}{tiempo: \ent, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}, 
+\aux{fondoDistribuido}{tiempo: \ent, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}, 
 eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, cooperan: \TLista{\bool}}{\float}{
 	\sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True \\}
 	{nuevaPlataSinFondo(i, tiempo, apuestas, pagos, eventos, trayectorias)/|cooperan| \\}{0}}
@@ -114,21 +114,37 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \subsection{trayectoriaExtrañaEscalera}
 \subsection{individuoDecideSiCooperarONo}
 
-\aux{FondoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
+\aux{fondoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
 recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{
-	(\prod\limits_{k=0}^{turno}{TasasDeCooperadores(k, cooperan, pagos, apuestas)}) * \\ recursosDeCooperadoresIniciales(cooperan, recursos)
+	(\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)}) * \\ recursosDeCooperadoresIniciales(cooperan, recursos)
 }
 
 \vspace{5mm} % TODO: estoy pensando... por ahí se puede agregar a la definición de aux/pred. estaría cool
 
-\aux{TasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{}{
-	\\ \sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True}{\frac{pagos[i][evento[i][turno]]*apuestas[i][evento[i][turno]]}{|cooperan|}}{0}}
+\aux{tasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}, eventos: \TLista{\TLista{\ent}}}}{}{
+	\\ \sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True}{\frac{tasaEnTurno(turno, i, pagos, apuestas, eventos)}{|cooperan|}}{0}}
 }
 
 \vspace{5mm}
 
 \aux{recursosDeCooperadoresIniciales}{cooperan: \TLista{\bool}, recursos: \TLista{\float}}{\float}{
 	\\ \sum\limits_{i=0}^{|cooperan|}{\IfThenElse{cooperan[i] = \True}{\frac{recursos[i]}{|cooperan|}}{0}}
+}
+
+\vspace{5mm}
+
+\aux{tasaEnTurno}{turno: \ent, individuo: \ent, pagos: \TLista{\TLista{\float}}, 
+apuestas: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\ent}}}{\float}{ \\
+	pagos[individuo][eventos[individuo][turno]]*apuestas[individuo][eventos[individuo][turno]]
+}
+
+\vspace{5mm}
+
+\aux{recursosDeNoCooperadorEnTurno}{turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
+pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}}{}{
+	recursos[individuo] * \prod\limits_{i=0}^{turno}{tasaEnTurno(turno, individuo, pagos, apuestas, eventos)} + \\
+	\sum\limits_{i=0}^{turno}{(fondoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas) \\ *
+	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)})}
 }
 
 
