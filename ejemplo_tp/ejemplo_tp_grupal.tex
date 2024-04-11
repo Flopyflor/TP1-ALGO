@@ -97,9 +97,9 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 }
 
 \aux{fondoDistribuido}{tiempo: \ent, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}, 
-eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, cooperan: \TLista{\bool}}{\float}{
+eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, cooperan: \TLista{\bool}}{\float}{ \\
 	\sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True \\}
-	{nuevaPlataSinFondo(i, tiempo, apuestas, pagos, eventos, trayectorias)/|cooperan| \\}{0}}
+	{\frac{nuevaPlataSinFondo(i, tiempo, apuestas, pagos, eventos, trayectorias)}{|cooperan|} \\}{0}}
 	% TODO: van a notar que puse la división acá. para no ponerla tanto arriba, que re no entraba nada.
 	% TODO: hay que encontrar la forma de poner un linebreak o algo acá pq no se lee :(
 }
