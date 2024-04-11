@@ -68,10 +68,9 @@
 
 \end{proc}
 
-% TODO: todosElementosDeLasListasPositivos
-\pred{todosElementosDeLasListasPositivos}{pagos:\TLista{\TLista}{\float}}{
-     {\paraTodo{i}{\ent}{\paraTodo{t}{\ent}(0 \leq i<|pagos| \land 0\leq t <|pagos[i]|) \yLuego \\
-     pagos[i][j] \geq 0}}
+\pred{todosElementosDeLasListasPositivos}{pagos: \TLista{\TLista{\float}}}{
+     \paraTodo{i}{\ent}{\paraTodo{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \yLuego \\
+     pagos[i][j] \geq 0}
 }
 
 % TODO: seApuestaTodo (apuestas suman 1)
