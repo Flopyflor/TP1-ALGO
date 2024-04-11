@@ -4,35 +4,8 @@
 **/__pycache__/
 
 ########################
-# Archivos que NO ignora
+# Archivos que ignora
 
-!LICENSE
-!license
-
-## Latex
-!*.tex
-*-concordance.tex
-!*.bib
-!*.bst
-!*.sty
-!*.cls
-
-## Codigo
-!*.jl
-!*.py
-!*.R
-!*.c
-!*.sql
-!*.sh
-!*.java
-!*.jar
-
-## Texto
-!*.md
-!*.txt
-
-## Otros
-!makefile
-!Makefile
-!.keep
-!.gitignore
+*.aux
+*.log
+*.pdf
