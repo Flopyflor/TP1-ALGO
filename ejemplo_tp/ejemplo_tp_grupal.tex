@@ -36,8 +36,7 @@
 	\asegura{|\res| = |recursos| \yLuego \paraTodo{i}{\ent}{0 <= i \le |result| \implicaLuego \IfThenElse{cooperan[i] = \True}{result[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{result[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
 \end{proc}
 
-\aux{fondoComun}{recursos: \TLista{\float}, cooperan: \TLista{\bool}}{\float}{
-	\sum\limits_{i=0}^{\longitud{recursos}-1} \IfThenElse{cooperan[i] = \True}{recursos[i]}{0}
+\aux{fondoComun}{recursos: \TLista{\float}, cooperan: \TLista{\bool}}{\float}{ \\\sum\limits_{i=0}^{\longitud{recursos}-1} \IfThenElse{cooperan[i] = \True}{recursos[i]}{0}
 }
 
 \subsection{trayectoriaDeLosFrutosIndividualesALargoPlazo}
@@ -70,16 +69,18 @@
 \end{proc}
 
 \pred{todosElementosDeLasListasPositivos}{pagos: \TLista{\TLista{\float}}}{
-     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \yLuego pagos[i][j] \geq 0}
+     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] \geq 0}
 }
 
 % TODO: seApuestaTodo (apuestas suman 1)
+\pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
+    \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
 
 % TODO: eventosValidos (indices válidos para pagos)
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
 cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{\TLista{\float}}}{
-	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \le i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \yLuego \\
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \le i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \implicaLuego \\
 	trayectorias[i][t] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
 }
 
@@ -96,7 +97,7 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, \\ trayectorias: \TLista{\TLista{\float}}}
 {\float}{\\
 	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \\ *trayectorias[individuo][tiempo - 1]
-	% TODO:  cual prefieren? \times o *?
+	% TODO:  cual prefieren? \times o *? lo cambie por *
 	% TODO: si quieren cambiar eventos[individuo][tiempo] 
 	% por algo más legible están invitados lol. Por ahí si cambiamos la entrada a <evento> directo?
 }
