@@ -50,9 +50,10 @@
 		|trayectorias| = |eventos| = |cooperan| = |apuestas| = |pagos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperan| \implicaLuego |trayectorias[i]| = 1 \land |apuestas[i]| = |pagos[i]|} \land \\
 		% TODO: querémos que todos los individuos apuesten a la misma cantidad de eventos?
-		todosElementosDeLasListasPositivos(pagos) \land todosElementosDeLasListasPositivos(trayectorias) \land \\
-		eventosValidos(eventos, pagos) \land seApuestaTodo(apuestas)
+		todosElementosDeLasListasPositivos(pagos) \land \\ todosElementosDeLasListasPositivos(trayectorias) \land \\
+		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)
 	}
+	
 	\asegura{
 		|trayectorias| = |eventos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectorias| \implicaLuego |trayectorias[i]| = |eventos[0]|+1} \land \\
@@ -119,8 +120,8 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \subsection{individuoDecideSiCooperarONo}
 
 \aux{fondoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
-recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{
-	(\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)}) * \\ recursosDeCooperadoresIniciales(cooperan, recursos)
+recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{\\
+	(\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)}) * recursosDeCooperadoresIniciales(cooperan, recursos)
 }
 
 \aux{tasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}, eventos: \TLista{\TLista{\ent}}}}{}{
@@ -137,7 +138,7 @@ apuestas: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\ent}}}{\float}{ \\
 }
 
 \aux{recursosDeNoCooperadorEnTurno}{turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
-pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}}{}{
+pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}}{}{\\
 	recursos[individuo] * \prod\limits_{i=0}^{turno}{tasaEnTurno(turno, individuo, pagos, apuestas, eventos)} + \\
 	\sum\limits_{i=0}^{turno}{(fondoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas) \\ *
 	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)})}
