@@ -77,8 +77,8 @@
 % TODO: eventosValidos (indices válidos para pagos)
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
-cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}}{
-	\paraTodo{i}{\ent}{\paraTodo{t}{\ent}{(0 \le i < |cooperan| \land 0 < t \le |eventos[0]|) \yLuego \\
+cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{\TLista{\float}}}{
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \le i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \yLuego \\
 	trayectorias[i][t] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
 }
 
