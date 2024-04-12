@@ -30,7 +30,6 @@
 
 \subsection{redistribucionDeLosFrutos}
 
-% TODO: acá dejé en el asegura un \res y varios result... el paquete que nos dieron los profes define res, usamos eso no? o prefieren result?
 \begin{proc}{redistribucionDeLosFrutos}{\In recursos: \TLista{\float}, \In cooperan: \TLista{\bool}}{\TLista{\float}}
 	\requiere{\paraTodo[unalinea]{e}{\float}{e \in recursos \implica e \ge 0} \land \longitud{cooperan} = \longitud{recursos}}
 	\asegura{|\res| = |recursos| \yLuego \\ \paraTodo[unalinea]{i}{\ent}{0 \leq i < |\res| \implicaLuego \IfThenElse{cooperan[i] = \True}{res[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{res[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
