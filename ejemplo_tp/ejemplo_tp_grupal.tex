@@ -72,7 +72,6 @@
      \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] \geq 0}
 }
 
-% TODO: seApuestaTodo (apuestas suman 1)
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
     \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
 
