@@ -46,6 +46,7 @@
 	\Inout trayectorias: \TLista{\TLista{\float}}, \In cooperan: \TLista{\bool}, \In apuestas: \TLista{\TLista{\float}},
 	\In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}
 }{}
+
 	\requiere{
 		|trayectorias| = |eventos| = |cooperan| = |apuestas| = |pagos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperan| \implicaLuego |trayectorias[i]| = 1 \land |apuestas[i]| = |pagos[i]|} \land \\
@@ -92,9 +93,9 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 
 
 \aux{nuevaPlataSinFondo}{individuo: \nat, tiempo: \nat, apuestas: \TLista{\TLista{\float}}, 
-pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: \TLista{\TLista{\float}}}
-{\float}{
-	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \times trayectorias[individuo][tiempo - 1]
+pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, \\ trayectorias: \TLista{\TLista{\float}}}
+{\float}{\\
+	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \\ *trayectorias[individuo][tiempo - 1]
 	% TODO:  cual prefieren? \times o *?
 	% TODO: si quieren cambiar eventos[individuo][tiempo] 
 	% por algo más legible están invitados lol. Por ahí si cambiamos la entrada a <evento> directo?
