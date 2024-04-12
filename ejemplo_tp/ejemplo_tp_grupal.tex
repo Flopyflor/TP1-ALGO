@@ -75,14 +75,16 @@
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
     \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
 
-% TODO: eventosValidos (indices válidos para pagos)
+% TODO: pred eventosValidos (indices válidos para pagos)
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
 cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{\TLista{\float}}}{
-	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \le i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \implicaLuego 
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \leq i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \implicaLuego 
 	trayectorias[i][t] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
 }
 
+% TODO: revisar el paratodo el tema de mayor o menor igual creo que en vez de \land 0 < t \le |eventos[0]|
+% seria 0 \le t <|eventos [0]
 
 \aux{calcularPlataConFondo}{individuo: \nat, tiempo: \nat, cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: \TLista{\TLista{\float}}}{\float}{ \\
@@ -90,7 +92,6 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 	{nuevaPlataSinFondo(individuo, tiempo, apuestas, pagos, eventos, trayectorias) \\
 	+ fondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan)}
 }
-
 
 \aux{nuevaPlataSinFondo}{individuo: \nat, tiempo: \nat, apuestas: \TLista{\TLista{\float}}, 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, \\ trayectorias: \TLista{\TLista{\float}}}
@@ -107,6 +108,11 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 	{\frac{nuevaPlataSinFondo(i, tiempo, apuestas, pagos, eventos, trayectorias)}{|cooperan|} \\}{0}}
 	% TODO: van a notar que puse la división acá. para no ponerla tanto arriba, que re no entraba nada.
 	% TODO: hay que encontrar la forma de poner un linebreak o algo acá pq no se lee :(
+}
+
+\pred{elPrincipioSigueIgual}{oldtrayectorias: \TLista{\TLista{\float}}, trayectorias:\TLista{\TLista{\float}}}{
+	\paraTodo[unalinea]{i}{\ent}{0 \leq i < |trayectorias|  \implicaLuego 
+	oldtrayectorias[i][0] = trayectorias [i][0]}
 }
 
 \subsection{trayectoriaExtrañaEscalera}
