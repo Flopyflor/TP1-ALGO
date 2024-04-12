@@ -14,7 +14,7 @@
 
 \integrante{Allami, Florencia}{484/23}{allamiflorencia@gmail.com}
 \integrante{Bartoli, Matilda}{175/23}{bartoli.matilda@gmail.com}
-\integrante{Pedro Simon, Felipe}{003/01}{email3@dominio.com}
+\integrante{Pedro Simon, Felipe}{135/23}{felipe.p.simon@gmail.com}
 \integrante{Apellido, Nombre4}{004/01}{email4@dominio.com}
 % Pongan cuantos integrantes quieran
 
@@ -69,11 +69,11 @@
 \end{proc}
 
 \pred{todosElementosDeLasListasPositivos}{pagos: \TLista{\TLista{\float}}}{
-     \paraTodo{i}{\ent}{\paraTodo{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \yLuego \\
-     pagos[i][j] \geq 0}
+     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \yLuego pagos[i][j] \geq 0}
 }
 
 % TODO: seApuestaTodo (apuestas suman 1)
+
 % TODO: eventosValidos (indices válidos para pagos)
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
