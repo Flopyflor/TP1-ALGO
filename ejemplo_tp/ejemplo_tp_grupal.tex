@@ -89,9 +89,6 @@ cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{
 	trayectorias[i][t] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
 }
 
-% TODO: revisar el paratodo el tema de mayor o menor igual creo que en vez de \land 0 < t \le |eventos[0]|
-% seria 0 \le t <|eventos [0]
-
 \aux{calcularPlataConFondo}{individuo: \nat, tiempo: \nat, cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: \TLista{\TLista{\float}}}{\float}{ \\
 	\IfThenElse{cooperan[individuo] = \True}{fondoDistribuido(tiempo, apuestas, pagos, eventos, trayectorias, cooperan) \\}
