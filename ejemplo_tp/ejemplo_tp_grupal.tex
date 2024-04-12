@@ -72,10 +72,15 @@
      \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] \geq 0}
 }
 
+% TODO: pred eventosValidos (indices válidos para pagos)
+
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
     \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
 
-% TODO: pred eventosValidos (indices válidos para pagos)
+\pred{elPrincipioSigueIgual}{oldtrayectorias: \TLista{\TLista{\float}}, trayectorias:\TLista{\TLista{\float}}}{
+	\paraTodo[unalinea]{i}{\ent}{0 \leq i < |trayectorias|  \implicaLuego 
+	oldtrayectorias[i][0] = trayectorias [i][0]}
+}
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
 cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{\TLista{\float}}}{
@@ -110,11 +115,6 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 	% TODO: hay que encontrar la forma de poner un linebreak o algo acá pq no se lee :(
 }
 
-\pred{elPrincipioSigueIgual}{oldtrayectorias: \TLista{\TLista{\float}}, trayectorias:\TLista{\TLista{\float}}}{
-	\paraTodo[unalinea]{i}{\ent}{0 \leq i < |trayectorias|  \implicaLuego 
-	oldtrayectorias[i][0] = trayectorias [i][0]}
-}
-
 \subsection{trayectoriaExtrañaEscalera}
 \subsection{individuoDecideSiCooperarONo}
 
@@ -143,5 +143,6 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)})}
 }
 
+\section{Ejercicio 2}
 
 \end{document}
