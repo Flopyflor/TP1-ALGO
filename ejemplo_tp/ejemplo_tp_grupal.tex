@@ -33,7 +33,7 @@
 % TODO: acá dejé en el asegura un \res y varios result... el paquete que nos dieron los profes define res, usamos eso no? o prefieren result?
 \begin{proc}{redistribucionDeLosFrutos}{\In recursos: \TLista{\float}, \In cooperan: \TLista{\bool}}{\TLista{\float}}
 	\requiere{\paraTodo[unalinea]{e}{\float}{e \in recursos \implica e \ge 0} \land \longitud{cooperan} = \longitud{recursos}}
-	\asegura{|\res| = |recursos| \yLuego \paraTodo{i}{\ent}{0 <= i \le |result| \implicaLuego \IfThenElse{cooperan[i] = \True}{result[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{result[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
+	\asegura{|\res| = |recursos| \yLuego \\ \paraTodo{i}{\ent}{0 <= i < |\res| \implicaLuego \IfThenElse{cooperan[i] = \True}{res[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{res[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
 \end{proc}
 
 \aux{fondoComun}{recursos: \TLista{\float}, cooperan: \TLista{\bool}}{\float}{ \\\sum\limits_{i=0}^{\longitud{recursos}-1} \IfThenElse{cooperan[i] = \True}{recursos[i]}{0}
