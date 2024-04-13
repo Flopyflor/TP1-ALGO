@@ -31,7 +31,7 @@
 \subsection{redistribucionDeLosFrutos}
 
 \begin{proc}{redistribucionDeLosFrutos}{\In recursos: \TLista{\float}, \In cooperan: \TLista{\bool}}{\TLista{\float}}
-	\requiere{\paraTodo[unalinea]{e}{\float}{e \in recursos \implica e \ge 0} \land \longitud{cooperan} = \longitud{recursos}}
+	\requiere{\paraTodo[unalinea]{e}{\float}{e \in recursos \implica e > 0} \land \longitud{cooperan} = \longitud{recursos}}
 	\asegura{|\res| = |recursos| \yLuego \\ \paraTodo[unalinea]{i}{\ent}{0 \leq i < |\res| \implicaLuego \IfThenElse{cooperan[i] = \True}{res[i] = \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}{res[i] = recursos[i] + \frac{fondoComun(recursos, cooperan)}{\longitud{recursos}}}}} 
 \end{proc}
 
@@ -69,10 +69,12 @@
 \end{proc}
 
 \pred{todosElementosDeLasListasPositivos}{pagos: \TLista{\TLista{\float}}}{
-     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] \geq 0}
+     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] > 0}
 }
 
-% TODO: pred eventosValidos (indices válidos para pagos)
+\pred{eventosValidos}{eventos: \TLista{\TLista{\nat}}, pagos: \TLista{\TLista{\float}}}{
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|eventos| \land 0\leq t <|eventos[i]| \implicaLuego eventos[i][t]<|pagos[i]|}}
+}
 
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
     \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
