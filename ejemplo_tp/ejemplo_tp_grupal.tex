@@ -15,7 +15,7 @@
 \integrante{Allami, Florencia}{484/23}{allamiflorencia@gmail.com}
 \integrante{Bartoli, Matilda}{175/23}{bartoli.matilda@gmail.com}
 \integrante{Pedro Simon, Felipe}{135/23}{felipe.p.simon@gmail.com}
-\integrante{Apellido, Nombre4}{004/01}{email4@dominio.com}
+\integrante{Sosa, Luciano}{1011/23}{sosaluciano261@gmail.com}
 % Pongan cuantos integrantes quieran
 
 % Declaramos donde van a estar las figuras
@@ -143,6 +143,9 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \subsection{individuoActualizaApuesta}
 
+\pred{esApuestaSimilar}{i: \ent, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
+	(|apuestas| = |s|) \land \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
+}
 \section{Ejercicio 2}
 
 \end{document}
