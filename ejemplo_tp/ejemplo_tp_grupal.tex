@@ -114,6 +114,11 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 }
 
 \subsection{trayectoriaExtrañaEscalera}
+
+\begin{proc}{trayectoriaExtrañaEscalera}{\In trayectoria: \TLista{\float}}{\bool}{}
+
+\end{proc}
+
 \subsection{individuoDecideSiCooperarONo}
 
 \aux{fondoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
@@ -143,7 +148,12 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \subsection{individuoActualizaApuesta}
 
-\pred{esApuestaSimilar}{i: \ent, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
+\begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , \Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }{}
+
+
+\end{proc}
+
+\pred{esApuestaSimilar}{i: \nat, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
 	(|apuestas| = |s|) \land \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
 }
 \section{Ejercicio 2}
