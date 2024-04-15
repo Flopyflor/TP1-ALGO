@@ -120,9 +120,43 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \subsection{individuoDecideSiCooperarONo}
 
-\aux{fondoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
+\begin{proc}{individuoDecideSiCooperarONo}{\In individuo: \nat, \In recursos: \TLista{\float}, \Inout cooperan: \TLista{\bool},
+ \In apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}}{}
+	\requiere{
+		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]|} \yLuego \\
+		eventosValidos(eventos, pagos) \land \\
+		todosElementosDeLasListasPositivos(pagos) \land \\
+		todosElementosDeLasListasPositivos(apuestas) \land \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} % TODO: habíamos dicho que recuros != 0 no?
+		}
+	\asegura{
+		|old(cooperan)| = |cooperan| \yLuego 
+		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
+		\IfThenElse{cooperan[individuo] = \True \\}
+		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge \\
+		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
+		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le \\
+		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
+	}
+
+\end{proc}
+
+\aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo, |cooperan|}
+}
+
+\aux{cooperanSiNoCoopera}{individuo, cooperan}{\TLista{\bool}}{
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo, |cooperan|}
+}
+
+\pred{soloSeActualizoElIndividuo}{individuo, cooperanV, cooperanN}{
+	\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperanV| \land i \neq individuo \implicaLuego cooperanV[i] = cooperanN[i]}
+}
+
+\aux{fondoDivididoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
 recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{\\
-	(\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)}) * recursosDeCooperadoresIniciales(cooperan, recursos)
+recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)})
 }
 
 \aux{tasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}, eventos: \TLista{\TLista{\ent}}}}{}{
@@ -139,10 +173,11 @@ apuestas: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\ent}}}{\float}{ \\
 }
 
 \aux{recursosDeNoCooperadorEnTurno}{turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
-pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}}{}{\\
+pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}, recursos: \TLista{\TLista{\float}}}{}{\\
 	recursos[individuo] * \prod\limits_{i=0}^{turno}{tasaEnTurno(turno, individuo, pagos, apuestas, eventos)} + \\
-	\sum\limits_{i=0}^{turno}{(fondoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas) \\ *
-	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)})}
+	\sum\limits_{i=0}^{turno}{(fondoDivididoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas) *
+ 	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)})}
+	% TODO: no estoy pudiendo poner un linebreak acá pq está dentro de una sumatoria
 }
 
 \subsection{individuoActualizaApuesta}
