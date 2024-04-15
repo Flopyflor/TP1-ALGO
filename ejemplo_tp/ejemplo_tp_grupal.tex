@@ -43,19 +43,19 @@
 	\In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}
 }{}
 
-	\requiere{
+	\requiere{\\
 		|trayectorias| = |eventos| = |cooperan| = |apuestas| = |pagos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperan| \implicaLuego |trayectorias[i]| = 1 \land |apuestas[i]| = |pagos[i]|} \land \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |eventos| \implicaLuego |eventos[i]| = |eventos[0]|} \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\ todosElementosDeLasListasPositivos(trayectorias) \land \\
-		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)
+		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)\\
 	}
 	
-	\asegura{
+	\asegura{\\
 		|trayectorias| = |eventos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectorias| \implicaLuego |trayectorias[i]| = |eventos[0]|+1} \land \\
 		elPrincipioSigueIgual(old(trayectorias), trayectorias) \land \\
-		estaBienCalculado(trayectorias, eventos, cooperan, apuestas, pagos)
+		estaBienCalculado(trayectorias, eventos, cooperan, apuestas, pagos)\\
 	}
 
 \end{proc}
@@ -118,22 +118,22 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \begin{proc}{individuoDecideSiCooperarONo}{\In individuo: \nat, \In recursos: \TLista{\float}, \Inout cooperan: \TLista{\bool},
  \In apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}}{}
-	\requiere{
+	\requiere{\\
 		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
 		eventosValidos(eventos, pagos) \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
-		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} % TODO: habíamos dicho que recuros != 0 no?
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ % TODO: habíamos dicho que recuros != 0 no?
 		}
-	\asegura{
+		\asegura{ \\
 		|old(cooperan)| = |cooperan| \yLuego 
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
 		\IfThenElse{cooperan[individuo] = \True \\}
-		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge \\
+		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
 		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
-		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le \\
-		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
+		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
+		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
 	}
 
 \end{proc}
