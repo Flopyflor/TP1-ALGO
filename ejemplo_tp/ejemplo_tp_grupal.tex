@@ -46,7 +46,7 @@
 	\requiere{
 		|trayectorias| = |eventos| = |cooperan| = |apuestas| = |pagos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperan| \implicaLuego |trayectorias[i]| = 1 \land |apuestas[i]| = |pagos[i]|} \land \\
-		% TODO: querémos que todos los individuos apuesten a la misma cantidad de eventos?
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |eventos| \implicaLuego |eventos[i]| = |eventos[0]|} \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\ todosElementosDeLasListasPositivos(trayectorias) \land \\
 		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)
 	}
@@ -54,12 +54,6 @@
 	\asegura{
 		|trayectorias| = |eventos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectorias| \implicaLuego |trayectorias[i]| = |eventos[0]|+1} \land \\
-		% TODO: acá está el 0 pq todos tienen la misma cantidad de eventos. 
-		% si les hace ruido podemos cambiarlo a eventos[i] y agregar otra sentencia 
-		% que verifique que sea la misma cantidad de eventos para cada individuo. 
-		% ...En realidad, no encuentro ninguna parte de la consigna que diga que 
-		% tiene que ser la misma cantidad de eventos para cada individuo? pero, sino 
-		% no tiene mucho sentido, no? cómo afectaría al fondo común sino?
 		elPrincipioSigueIgual(old(trayectorias), trayectorias) \land \\
 		estaBienCalculado(trayectorias, eventos, cooperan, apuestas, pagos)
 	}
@@ -99,16 +93,12 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, \\ trayectorias: \TLista{\TLista{\float}}}
 {\float}{\\
 	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \\ *trayectorias[individuo][tiempo - 1]
-	% TODO: si quieren cambiar eventos[individuo][tiempo] 
-	% por algo más legible están invitados lol. Por ahí si cambiamos la entrada a <evento> directo?
 }
 
 \aux{fondoDistribuido}{tiempo: \ent, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}, 
 eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, cooperan: \TLista{\bool}}{\float}{ \\
 	\sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True \\}
 	{\frac{nuevaPlataSinFondo(i, tiempo, apuestas, pagos, eventos, trayectorias)}{|cooperan|} \\}{0}}
-	% TODO: van a notar que puse la división acá. para no ponerla tanto arriba, que re no entraba nada.
-	% TODO: hay que encontrar la forma de poner un linebreak o algo acá pq no se lee :(
 }
 
 \subsection{trayectoriaExtrañaEscalera}
@@ -124,7 +114,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
  \In apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}}{}
 	\requiere{
 		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
-		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]|} \yLuego \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
 		eventosValidos(eventos, pagos) \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
