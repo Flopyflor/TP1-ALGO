@@ -109,7 +109,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \end{proc}
 
 \pred {hayUnSoloMaximoLocal}{trayectoria: \TLista{\float}}{
-    \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
+    \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \neg \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
 
 \pred {esMaximoLocal}{i: \ent, trayectoria: \TLista{\float}}{
     |trayectoria| = 1 \oLuego (i = 0 \land trayectoria[0] > trayectoria[1]) \lor  (|trayectoria| \geq 3 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1]) \oLuego (i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2])}
