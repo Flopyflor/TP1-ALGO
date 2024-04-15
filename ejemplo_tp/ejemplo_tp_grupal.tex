@@ -172,7 +172,7 @@ apuestas: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\ent}}}{\float}{ \\
 pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}, recursos: \TLista{\TLista{\float}}}{}{\\
 	recursos[individuo] * \prod\limits_{i=0}^{turno}{tasaEnTurno(turno, individuo, pagos, apuestas, eventos)} + \\
 	\sum\limits_{i=0}^{turno}{(fondoDivididoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas)} *\\
- 	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)} \r[)] 
+ 	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)} \text{)} 
 	% TODO: no estoy pudiendo poner un linebreak acá pq está dentro de una sumatoria
 }
 
