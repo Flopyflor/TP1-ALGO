@@ -104,7 +104,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \subsection{trayectoriaExtrañaEscalera}
 
 \begin{proc}{trayectoriaExtrañaEscalera}{\In trayectoria: \TLista{\float}}{\bool}
-	\requiere{|trayectoria| \leq 1}
+	\requiere{|trayectoria| \geq 1}
 	\asegura{\res = true \iff hayUnSoloMaximoLocal} 
 \end{proc}
 
