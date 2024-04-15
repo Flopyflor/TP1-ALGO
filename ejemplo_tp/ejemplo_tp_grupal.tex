@@ -127,7 +127,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ % TODO: habíamos dicho que recuros != 0 no?
 		}
 		\asegura{ \\
-		|old(cooperan)| = |cooperan| \yLuego 
+		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
 		\IfThenElse{cooperan[individuo] = \True \\}
 		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
@@ -138,14 +138,6 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \end{proc}
 
-\aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
-	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo, |cooperan|}
-}
-
-\aux{cooperanSiNoCoopera}{individuo, cooperan}{\TLista{\bool}}{
-	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo, |cooperan|}
-}
-
 \pred{soloSeActualizoElIndividuo}{individuo, cooperanV, cooperanN}{
 	\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperanV| \land i \neq individuo \implicaLuego cooperanV[i] = cooperanN[i]}
 }
@@ -153,6 +145,13 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \aux{fondoDivididoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
 recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{\\
 recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)})
+}
+\aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo, |cooperan|}
+}
+
+\aux{cooperanSiNoCoopera}{individuo, cooperan}{\TLista{\bool}}{
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo, |cooperan|}
 }
 
 \aux{tasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}, eventos: \TLista{\TLista{\ent}}}}{}{
