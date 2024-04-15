@@ -14,7 +14,7 @@
 
 \integrante{Allami, Florencia}{484/23}{allamiflorencia@gmail.com}
 \integrante{Bartoli, Matilda}{175/23}{bartoli.matilda@gmail.com}
-\integrante{Pedro Simon, Felipe}{135/23}{felipe.p.simon@gmail.com}
+\integrante{Simon, Felipe Pedro}{135/23}{felipe.p.simon@gmail.com}
 \integrante{Sosa, Luciano}{1011/23}{sosaluciano261@gmail.com}
 % Pongan cuantos integrantes quieran
 
@@ -103,10 +103,16 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \subsection{trayectoriaExtrañaEscalera}
 
-\begin{proc}{trayectoriaExtrañaEscalera}{
-	\In trayectoria: \TLista{\float}{\bool}}
-	
+\begin{proc}{trayectoriaExtrañaEscalera}{\In trayectoria: \TLista{\float}}{\bool}
+	\requiere{|trayectoria| \leq 1}
+	\asegura{\res = true \iff hayUnSoloMaximoLocal} 
 \end{proc}
+
+\pred {hayUnSoloMaximoLocal}{trayectoria: \TLista{\float}}{
+    \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
+
+\pred {esMaximoLocal}{i: \ent, trayectoria: \TLista{\float}}{
+    |trayectoria| = 1 \oLuego (i = 0 \land trayectoria[0] > trayectoria[1]) \lor  (|trayectoria| \geq 3 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1]) \oLuego (i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2])}
 
 \subsection{individuoDecideSiCooperarONo}
 
