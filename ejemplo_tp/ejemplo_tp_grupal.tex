@@ -148,11 +148,11 @@ recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\T
 recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)})
 }
 \aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
-	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo, |cooperan|}
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo+1, |cooperan|}
 }
 
 \aux{cooperanSiNoCoopera}{individuo, cooperan}{\TLista{\bool}}{
-	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo, |cooperan|}
+	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo+1, |cooperan|}
 }
 
 \aux{tasasDeCooperadores}{turno: \ent, cooperan: \TLista{\bool}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}, eventos: \TLista{\TLista{\ent}}}}{}{
