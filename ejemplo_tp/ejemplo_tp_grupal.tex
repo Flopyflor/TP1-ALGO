@@ -246,7 +246,7 @@ Para ello necesitamos:
 	\item \textbf{PC}= $\{res= recurso \wedge i=0\}$
 	\item \textbf{QC (postcondición del ciclo)}= $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
 	\item \textbf{BC (guarda del ciclo)} = $i < |eventos|$
-	\item \textbf{FV (función variante)} = $|eventos|-i$
+	\item \textbf{Fv (función variante)} = $|eventos|-i$
 \end{enumerate}
 
 Luego, hay que demostrar:
@@ -254,8 +254,8 @@ Luego, hay que demostrar:
 	\item \textbf{$PC \implica I$}
 	\item \textbf{$\{ I \wedge B \}S\{ I \}$}
 	\item \textbf{$I \wedge \neg B \implica QC$}
-	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}
-	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} 
+	\item \textbf{$\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$}
+	\item \textbf{$I \wedge Fv\leq0 \implica \neg B$} 
 
 \end{enumerate}
 
@@ -397,76 +397,76 @@ Luego, hay que demostrar:
 	\textbf{Luego, queda demostrado que $I \wedge \neg B \implica QC$}. \\
 
 
-	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}\\
+	\item \textbf{$\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<V_0 \}$}\\
 	\vspace{2mm} 
-	\textbf{Hay que probar que $\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$}.\\
+	\textbf{Hay que probar que $\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$}.\\
 	\vspace{2mm}
-	\textbf{Resuelvo primero wp(S,$Fv<vo$)}\\
+	\textbf{Resuelvo primero wp(S,$Fv<v_0$)}\\
 	\vspace{2mm}
 	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,$Fv<vo$) $\equiv$ wp(Sif,S4,$Fv<vo$) $\equiv$ wp(Sif, wp(S4,$Fv<vo$))} \\
+	\textbf{Luego, wp(S,$Fv<v_0$) $\equiv$ wp(Sif,S4,$Fv<v_0$) $\equiv$ wp(Sif, wp(S4,$Fv<v_0$))} \\
 	\vspace{6mm}
-	\textbf{Resuelvo $wp (S4,Fv<vo)$}\\
-	$wp (S4,Fv<vo) \equiv wp (i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
+	\textbf{Resuelvo $wp (S4,Fv<v_0)$}\\
+	$wp (S4,Fv<v_0) \equiv wp (i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
 	\vspace{2mm}
-	$True \land |eventos|-i-1<vo$  $\equiv |eventos|-i-1<vo$ \\
+	$True \land |eventos|-i-1<v_0$  $\equiv |eventos|-i-1<v_0$ \\
 	\vspace{6mm}
-	\textbf{Resuelvo wp (Sif,$|eventos|-i-1<vo$)}\\
+	\textbf{Resuelvo wp (Sif,$|eventos|-i-1<v_0$)}\\
 	\vspace{2mm}
-	wp (Sif,$|eventos|-i-1<vo$) $\equiv$ \\
+	wp (Sif,$|eventos|-i-1<v_0$) $\equiv$ \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<vo))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<vo)))$\\
+	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$\\
 	\vspace{2mm}
-	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<vo))$)} \\
+	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))$)} \\
 	\vspace{2mm}
-	$eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<vo) $ $\equiv$ \\
+	$eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0) $ $\equiv$ \\
 	\vspace{2mm}
-	$eventos[i]=true \wedge  |eventos|-i-1<vo$ \\
+	$eventos[i]=true \wedge  |eventos|-i-1<v_0$ \\
 	\vspace{2mm}
-	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<vo))$ )} \\
+	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0))$ )} \\
 	\vspace{2mm}
-	$eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<vo) $ $\equiv$ \\
+	$eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0) $ $\equiv$ \\
 	\vspace{2mm}
-	$eventos[i]=false \wedge  |eventos|-i-1<vo$ \\
+	$eventos[i]=false \wedge  |eventos|-i-1<v_0$ \\
 	\vspace{2mm}
 	\textbf{(Juntando todo)} \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<vo))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<vo)))$ $\equiv$ \\
+	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$ $\equiv$ \\
 	\vspace{2mm}
-	$0 \leq i <|eventos| \land$ (($eventos[i]=true \wedge  |eventos|-i-1<vo$) $\vee$  ($eventos[i]=false \wedge  |eventos|-i-1<vo$)) $\equiv$\\
+	$0 \leq i <|eventos| \land$ (($eventos[i]=true \wedge  |eventos|-i-1<v_0$) $\vee$  ($eventos[i]=false \wedge  |eventos|-i-1<v_0$)) $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo \wedge (eventos[i]=true \vee eventos[i]=false)$ $\equiv$ \\
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0 \wedge (eventos[i]=true \vee eventos[i]=false)$ $\equiv$ \\
 	\vspace{2mm}
-	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo \wedge True$ $\equiv$ \\
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0 \wedge True$ $\equiv$ \\
 	\vspace{2mm}
-	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ \\
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$ \\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,$Fv<vo$) $\equiv$ $0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$}\\
+	\textbf{Luego, wp(S,$Fv<v_0$) $\equiv$ $0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$}\\
 	\vspace{6mm}
-	\textbf{Ahora ya sabiendo cuanto vale wp(S,$Fv<vo$) podemos probar la validez de $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$, es decir, que $\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$} \\
+	\textbf{Ahora ya sabiendo cuanto vale wp(S,$Fv<v_0$) podemos probar la validez de $\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$, es decir, que $\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$} \\
 	\vspace{2mm}
-	$\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$ $ \equiv$ \\
+	$\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$ $ \equiv$ \\
 	\vspace{2mm}
 	\textbf{(Para simplificar escribo a I como $0\leq i \leq |eventos| \wedge res_i$)}\\
 	\vspace{2mm}
-	$0\leq i \leq |eventos| \wedge res_i \wedge $ $i < |eventos|$ $\wedge |eventos|-i = vo \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	$0\leq i \leq |eventos| \wedge res_i \wedge $ $i < |eventos|$ $\wedge |eventos|-i = v_0 \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$ $\equiv$ \\
 	\vspace{2mm}
-	$res_i \wedge 0\leq i<|evento| \wedge |eventos|-i = vo \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	$res_i \wedge 0\leq i<|evento| \wedge |eventos|-i = v_0 \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Asumo que vale ($I \wedge B \wedge Fv= vo$))}\\
+	\textbf{(Asumo que vale ($I \wedge B \wedge Fv= v_0$))}\\
 	\vspace{2mm}
-	$True\wedge True \wedge |eventos|-i = vo \implica True \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	$True\wedge True \wedge |eventos|-i = v_0 \implica True \wedge$ $|eventos|-i-1<v_0$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Reemplazo a vo por Fv ya que asumimos que vale)}\\
+	\textbf{(Reemplazo a $v_0$ por Fv ya que asumimos que vale)}\\
 	\vspace{2mm}
-	$|eventos|-i = vo \implica |eventos|-i-1<|eventos|-i$ $\equiv$ \\
+	$|eventos|-i = v_0 \implica |eventos|-i-1<|eventos|-i$ $\equiv$ \\
 	\vspace{2mm}
 	$ True\implica -1<0 $ $\equiv$ \\
 	\vspace{2mm}
 	$ True\implica True $ \\
 	\vspace{4mm}
-	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$ vale.}
+	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$ vale.}
 
 	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} \\
 	\vspace{2mm}
