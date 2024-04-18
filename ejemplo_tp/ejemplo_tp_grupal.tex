@@ -238,17 +238,22 @@ Demostracion de la correcitud del ciclo:\\
 \vspace{3mm}
 Para ello necesitamos: \\
 \begin{enumerate} \setlength\itemsep{0cm}
-	\item I (invariante)= 0<i<eventos y res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$
+	\item I (invariante)= $0<i<|eventos|$ y res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$
+	%menor y mayor igual
 	\item PC= \{res= recurso y i=0\}
-	\item QC (postcondicion del ciclo)= \{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$ y i=|eventos|\}
-	\item BC (guarda del ciclo) = i < eventos
-	\item FV (función variante) = eventos-i
-	%no me deja poner la longitud de eventos porque lo pone raro cuadno lo  paso a pdf, y despues el < tambien me lo pone mal
+	\item QC (postcondicion del ciclo)= \{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$ y $i=|eventos|$\}
+	\item BC (guarda del ciclo) = $i < |eventos|$
+	\item FV (función variante) = $|eventos|-i$
 	%tambien hay que poner los y como simbolos pero no me deja, nose porque.
 \end{enumerate}
-
+Luego, hay que demostrar:\\
+\begin{enumerate} \setlength\itemsep{0cm}
+	\item PC implica I
+	\item \{ I y B \}S\{ I\}
+	\item I y no b implica QC
+	\item \{ I y B  y Fv= vo\}S\{ $Fv<Vo$\}
+	\item ff
+\end{enumerate}
 \end{flushleft}
-
-
 
 \end{document}
