@@ -188,14 +188,12 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 \section{Ejercicio 2}
 \begin{flushleft}
 Queremos probar  la validez de la siguiente tripla de Hoare:
-\textbf{\{ P \}S\{ Q \}}la cual es valida si solo si {(P) implicaLuego (wp(S,Q))}.\\
-                                        %aca va un implica luego en simbolos pero nose pq no le gusta 
+\textbf{\{ P \}S\{ Q \}} la cual es valida si solo si \textbf{{P $\implicaLuego$ wp(S,Q)}.}\\                                  
 \vspace{3mm}
-\textbf{P (precondición)}=\{ $apuesta_c + apuesta_s =1$ y $pago_c>0$ y $pago_s>0$ y $apuesta_c>0$ y $apuesta_s>0$ y $recurso>0$\}\\
-%hay que reemplazar los y por el simbolo pero no se porque no me lo toma 
+\textbf{P (precondición)}=$\{ apuesta_c + apuesta_s =1 \wedge pago_c>0 \wedge pago_s>0 \wedge apuesta_c>0 \wedge apuesta_s>0 \wedge recurso>0\}$\\
 \vspace{3mm}
-\textbf{Q (postcondición)}=\{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$\}\\
-\vspace{30mm}
+\textbf{Q (postcondición)}=\{res=recurso($apuesta_cpago_c)^{\#(eventos,T)}$($apuesta_spago_s)^{\#(eventos,F)}$\}\\
+\vspace{34mm}
 \textbf{S (programa)}=
 \begin{lstlisting}
 	res := recurso;
@@ -229,63 +227,80 @@ Queremos probar  la validez de la siguiente tripla de Hoare:
 		\end{lstlisting} 
 
 \vspace{3mm}
-Luego, queriamos probar que (P) implicaLuego (wp(S,Q)).Esto es lo mismo que probar que (P) implicaLuego (wp(S1,S2,S3,Q)).\\
+Luego, queriamos probar que P $\implicaLuego$ wp(S,Q).Esto es lo mismo que probar que P $\implicaLuego$ wp(S1,S2,S3,Q).\\
 \vspace{3mm}
-Primero debemos hallar \textbf{(wp(S1,S2,S3,Q)) = wp(s1,s2(wp(S3,Q)))}.\\
+Primero debemos hallar \textbf{wp(S1,S2,S3,Q) $\equiv$ wp(s1,s2(wp(S3,Q)))}.\\
 \vspace{3mm}
-\textbf{wp(S3,Q)} = PC (precondición del ciclo)= \{res= recurso y i=0\}\\
+\textbf{wp(S3,Q)} = PC (precondición del ciclo)= \{res= recurso $\wedge$ i=0\}\\
 \vspace{3mm}
 \textbf{Demostración de la correcitud del ciclo:}\\
 \vspace{3mm}
 Para ello necesitamos: 
 \begin{enumerate} \setlength\itemsep{0cm}
-	\item \textbf{I (invariante)}= $0<i<|eventos|$ y res=recurso($apuesta_cpago_c)^{\#subseq(evento,0,i),T}$($apuesta_spago_s)^{\#subseq(evento,0,i),F}$
-	%menor y mayor igual
-	\item \textbf{PC}= \{res= recurso y i=0\}
-	\item \textbf{QC (postcondición del ciclo)}= \{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$ y $i=|eventos|$\}
+	\item \textbf{I (invariante)}= $0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}$
+	\item \textbf{PC}= $\{res= recurso \wedge i=0\}$
+	\item \textbf{QC (postcondición del ciclo)}= $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
 	\item \textbf{BC (guarda del ciclo)} = $i < |eventos|$
 	\item \textbf{FV (función variante)} = $|eventos|-i$
-	%tambien hay que poner los y como simbolos pero no me deja, nose porque.
 \end{enumerate}
 
 Luego, hay que demostrar:
 \begin{enumerate} \setlength\itemsep{0cm}
-	\item PC implica I
-	\item \{ I y B \}S\{ I \}
-	\item I y no B implica QC
-	\item \{ I y B  y Fv= vo \}S\{ $Fv<Vo$ \}
-	\item I y $FV<=0$ implica noB
-	%hay que poner en simbolos los y los implica pero no me deja
-\end{enumerate}
-
-\begin{enumerate} \setlength\itemsep{0cm}
-	\item PC implica I\\
-	res= recurso y i=0 implica $0<i<|eventos|$ y res=recurso($apuesta_cpago_c)^{\#(subseq(evento,0,i),T)}$($apuesta_spago_s)^{\#(subseq(evento,0,i),F)}$\\
-	\vspace{2mm}
-	\textbf{Asumo que vale PC (luego vale cada termino que lo compone)}.\\
-	\vspace{2mm}
-	\textbf{Reemplazo en I las i por i=0 (ya que asumimos que vale)}.\\
-	\vspace{2mm}
-	res= recurso y i=0 implica $0<0<|eventos|$ y res=recurso($apuesta_cpago_c)^{\#(subseq(evento,0,0),T)}$($apuesta_spago_s)^{\#(subseq(evento,0,0),F)}$=\\
-	\vspace{2mm}
-	res= recurso y i=0 implica True y res=recurso($apuesta_cpago_c)^{\#(lista vacia,T)}$($apuesta_spago_s)^{\#(lista vacia,F)}$=\\
-	\vspace{2mm}
-	res= recurso y i=0 implica res=recurso($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0}$=\\
-	\vspace{2mm}
-	res= recurso y i=0 implica res=recurso=\\
-	\vspace{2mm}
-	res= recurso y i=0 implica True \\
-	\vspace{2mm}
-	\textbf{Luego, queda demostrado que PC implica I}.
-	%hay que poner en simbolos los y los implica pero no me deja
-	\item \{ I y B \}S\{ I \}\\
-	\item I y no B implica QC\\
-	\item \{ I y B  y Fv= vo \}S\{ $Fv<Vo$ \}\\
-	\item I y $FV<=0$ implica noB \\
-
-
+	\item \textbf{$PC \implica I$}
+	\item \textbf{$\{ I \wedge B \}S\{ I \}$}
+	\item \textbf{$I \wedge \neg B \implica QC$}
+	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}
+	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} 
 
 \end{enumerate}
+
+\begin{enumerate} \setlength\itemsep{4mm}
+	\item \textbf{$PC \implica I$} \\
+	\vspace{2mm}
+	$res= recurso$ $\wedge$ i=0 $\implica 0\leq i\leq|eventos| \wedge$ res=recurso$(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \equiv$\\
+	\vspace{3mm}
+	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}.\\
+	\vspace{3mm}
+	\textbf{(Reemplazo en I a i por i=0 (ya que asumimos que vale))}.\\
+	\vspace{3mm}
+	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)}\equiv$\\
+	\vspace{2mm}
+	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(lista vacia,T)}$($apuesta_spago_s)^{\#(lista vacia,F)}\equiv$ \\
+	\vspace{2mm}
+	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0} \equiv $\\
+	\vspace{2mm}
+	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$ $\equiv $\\
+	\vspace{2mm}
+	$res= recurso$ $\wedge$ i=0  $\implica$ True \\
+	\vspace{3mm}
+	\textbf{Luego, queda demostrado que PC $\implica$ I}.\\
+	\item \textbf{$\{ I \wedge B \}S\{ I \}$}
+	\item \textbf{$I \wedge \neg B \implica QC$}\\
+	\vspace{2mm}
+	$0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \wedge i \geq |eventos| \implica QC \equiv $ \\
+	\vspace{2mm}
+	\textbf{(Como $i \leq |eventos| \wedge i\geq |eventos|$, luego $i=|eventos|$)}.\\
+	\vspace{2mm}
+	$i = |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(evento,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}  \implica QC \equiv $ \\
+	\vspace{3mm}
+	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}.\\
+	\vspace{3mm}
+	\textbf{(Reemplazo en ($I \wedge \neg B $) a i por $i= |eventos|$ (ya que asumimos que vale))}.\\
+	\vspace{3mm}
+	$i = |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,|eventos|),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,|eventos|),F)} \implica QC \equiv $ \\
+	\vspace{2mm}
+	$ i=|eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \implica QC \equiv $ \\
+	\vspace{2mm}
+	$QC \implica QC$ \\
+	\vspace{3mm}
+	\textbf{Luego, queda demostrado que $I \wedge \neg B \implica QC$}. \\
+	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}
+	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} 
+
+
+
+\end{enumerate}
+
 
 \end{flushleft}
 
