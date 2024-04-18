@@ -193,25 +193,28 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 \section{Ejercicio 2}
 \begin{flushleft}
 Queremos probar  la validez de la siguiente tripla de Hoare:
-\textbf{\{ P \}S\{ Q \}} la cual es valida si solo si \textbf{{P $\implicaLuego$ wp(S,Q)}.}\\                                  
+\textbf{\{ P \}S\{ Q \}} la cual es válida si solo si \textbf{{P $\implicaLuego$ wp(S,Q)}.}\\                                  
 \vspace{3mm}
 \textbf{P (precondición)}=$\{ apuesta_c + apuesta_s =1 \wedge pago_c>0 \wedge pago_s>0 \wedge apuesta_c>0 \wedge apuesta_s>0 \wedge recurso>0\}$\\
 \vspace{3mm}
 \textbf{Q (postcondición)}=\{res=recurso($apuesta_cpago_c)^{\#(eventos,T)}$($apuesta_spago_s)^{\#(eventos,F)}$\}\\
+\vspace{3mm}
+Nótese que \#$(eventos, T)$ es la notación abreviada del auxiliar {\normalfont\ttfamily\#apariciones$(eventos, T)$} 
+que se definió en la teórica \\
 \vspace{34mm}
 \textbf{S (programa)}=
 \begin{lstlisting}
 	res := recurso;
 	i := 0;
 	while (i < eventos.size()) do
-	    if eventos[i]then
-		   res:= (res.apuesta_c)pago_c
+	    if eventos[i] then
+		   res:= (res * apuesta.c)pago.c
 		else
-		   res:= (res.apuesta_s)pago_s
+		   res:= (res * apuesta.s)pago.s
 		endif
 		i := i + 1
 	endwhile
-		\end{lstlisting} 
+\end{lstlisting} 
 
 \vspace{3mm}
 \textbf{Dividimos el programa en tres partes (S1,S2,S3)}:\\
@@ -222,19 +225,19 @@ Queremos probar  la validez de la siguiente tripla de Hoare:
 	i := 0;
 	S3
 	while (i < eventos.size()) do
-	     if eventos[i]then
-		   res:= (res.apuesta_c)pago_c
+	     if eventos[i] then
+		   res:= (res * apuesta.c)pago.c
 		 else
-		   res:= (res.apuesta_s)pago_s
+		   res:= (res * apuesta.s)pago.s
 		 endif
 		i := i + 1
 	endwhile
 		\end{lstlisting} 
 
 \vspace{3mm}
-Luego, queriamos probar que P $\implicaLuego$ wp(S,Q). Esto es lo mismo que probar que P $\implicaLuego$ wp(S1,S2,S3,Q).\\
+Luego, queriamos probar que P $\implicaLuego$ wp(S,Q). Esto es lo mismo que probar que P $\implicaLuego$ wp(S1;S2;S3,Q).\\
 \vspace{3mm}
-Primero debemos hallar \textbf{wp(S1,S2,S3,Q) $\equiv$ wp(s1,s2(wp(S3,Q)))}.\\
+Primero debemos hallar \textbf{wp(S1;S2;S3,Q) $\equiv$ wp(s1,s2(wp(S3,Q)))}.\\
 \vspace{3mm}
 \textbf{wp(S3,Q)} = PC (precondición del ciclo)= \{res= recurso $\wedge$ i=0\}\\
 \vspace{3mm}
@@ -246,7 +249,7 @@ Para ello necesitamos:
 	\item \textbf{PC}= $\{res= recurso \wedge i=0\}$
 	\item \textbf{QC (postcondición del ciclo)}= $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
 	\item \textbf{BC (guarda del ciclo)} = $i < |eventos|$
-	\item \textbf{Fv (función variante)} = $|eventos|-i$
+	\item \textbf{fv (función variante)} = $|eventos|-i$
 \end{enumerate}
 
 Luego, hay que demostrar:
@@ -254,8 +257,8 @@ Luego, hay que demostrar:
 	\item \textbf{$PC \implica I$}
 	\item \textbf{$\{ I \wedge B \}S\{ I \}$}
 	\item \textbf{$I \wedge \neg B \implica QC$}
-	\item \textbf{$\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$}
-	\item \textbf{$I \wedge Fv\leq0 \implica \neg B$} 
+	\item \textbf{$\{ I \wedge B \wedge fv= v_0 \}S\{ fv<v_0 \}$}
+	\item \textbf{$I \wedge fv\leq0 \implica \neg B$} 
 
 \end{enumerate}
 
@@ -270,7 +273,7 @@ Luego, hay que demostrar:
 	\vspace{3mm}
 	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)}\equiv$\\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(lista vacia,T)}$($apuesta_spago_s)^{\#(lista vacia,F)}\equiv$ \\
+	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(\lvacia,T)}$($apuesta_spago_s)^{\#(\lvacia,F)}\equiv$ \\
 	\vspace{2mm}
 	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0} \equiv $\\
 	\vspace{2mm}
@@ -288,7 +291,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,I) $\equiv$ wp(Sif,S4,I) $\equiv$ wp(Sif, wp(S4,I))} \\
+	\textbf{Luego, wp(S,I) $\equiv$ wp(Sif;S4,I) $\equiv$ wp(Sif, wp(S4,I))} \\
 	\vspace{6mm}
 	\textbf{Resuelvo wp(S4,I)}\\
 	\vspace{2mm}
@@ -304,47 +307,47 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$wp(Sif,Qif)$$\equiv$\\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,Qif)))$\\
+	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$\\
 	\vspace{6mm}
-	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,Qif))$) }\\
+	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))$) }\\
 	\vspace{2mm}
-	\textbf{(Reservo el $eventos[i]=true$ y resuelvo $wp (res:=(res.apuesta_c)pago_c,Qif)$)}\\
+	\textbf{(Reservo el $eventos[i]=true$ y resuelvo $wp (res:=(res*apuesta_c)pago_c,Qif)$)}\\
 	\vspace{2mm}
-	$wp (res:=(res.apuesta_c)pago_c,Qif)$ $\equiv$\\
+	$wp (res:=(res*apuesta_c)pago_c,Qif)$ $\equiv$\\
 	\vspace{2mm}
-	$def(res:=(res.apuesta_c)pago_c) \land Qif_{(res.apuesta_c)pago_c}^{res}$$\equiv$\\
+	$def(res:=(res*apuesta_c)pago_c) \land Qif_{(res*apuesta_c)pago_c}^{res}$$\equiv$\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{\# (subseq(eventos,i,i+1),T)}$. \\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{\# (subseq(eventos,i,i+1),T)}$ \\
 	\vspace{1mm}
 	$(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{\# (subseq(eventos,i,i+1),T)}$ $\equiv$\\
 	\vspace{3mm}
 	\textbf{(Sabiendo que $eventos[i]=true$, reordeno la equivalencia)}\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{1}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{0}$ $\equiv$\\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{1}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{0}$ $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ $\equiv$\\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i+1 \leq |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ \\
 	\vspace{8mm}
-	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,Qif))$) }\\
+	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif))$) }\\
 	\vspace{2mm}
-	\textbf{(Reservo el $eventos[i]=false$ y resuelvo $wp (res:=(res.apuesta_s)pago_s,Qif)$)}\\
+	\textbf{(Reservo el $eventos[i]=false$ y resuelvo $wp (res:=(res*apuesta_s)pago_s,Qif)$)}\\
 	\vspace{2mm}
-	$wp (res:=(res.apuesta_s)pago_s,Qif)$ $\equiv$\\
+	$wp (res:=(res*apuesta_s)pago_s,Qif)$ $\equiv$\\
 	\vspace{2mm}
-	$def(res:=(res.apuesta_s)pago_s) \land Qif_{(res.apuesta_s)pago_s}^{res}$$\equiv$\\
+	$def(res:=(res*apuesta_s)pago_s) \land Qif_{(res*apuesta_s)pago_s}^{res}$$\equiv$\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{\# (subseq(eventos,i,i+1),T)}$. \\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{\# (subseq(eventos,i,i+1),T)}$ \\
 	\vspace{1mm}
 	$(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{\# (subseq(eventos,i,i+1),T)}$ $\equiv$\\
 	\vspace{3mm}
 	\textbf{(Sabiendo que $eventos[i]=false$, reordeno la equivalencia)}\\
 	\vspace{2mm}
-	$0 \leq i+1 \leq |eventos| \wedge (res.apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{0}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{1}$ $\equiv$\\
+	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_cpago_c)^{0}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}(apuesta_spago_s)^{1}$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i+1 \leq |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ \\
 	\vspace{6mm}
@@ -352,17 +355,17 @@ Luego, hay que demostrar:
 	\vspace{6mm}
 	\textbf{(Juntando todo)} \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,Qif)))$$\equiv$\\
+	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$$\equiv$\\
 	\vspace{2mm}
-	$0 \leq 1 < |eventos| \land ((eventos[i]=true \wedge resIf)\vee (eventos[i]=false \wedge resIf))$$\equiv$\\
+	$0 \leq i < |eventos| \land ((eventos[i]=true \wedge resIf)\vee (eventos[i]=false \wedge resIf))$$\equiv$\\
 	\vspace{2mm}
-	$0 \leq 1 < |eventos| \wedge resIf \land (eventos[i]=true \vee eventos[i]=false)$$\equiv$\\
+	$0 \leq i < |eventos| \wedge resIf \land (eventos[i]=true \vee eventos[i]=false)$$\equiv$\\
 	\vspace{2mm}
-	$0 \leq 1 < |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ \\
+	$0 \leq i < |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ \\
 	\vspace{4mm}
 	\textbf{Luego, wp(Sif,Qif) $\equiv$ $0 \leq i < |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$}\\
 	\vspace{6mm}
-	\textbf{Ahora ya sabiendo cuanto vale wp(S,I) podemos probar la validez de $\{ I \wedge B \}S\{ I\}$, es decir, que $\{ I \wedge B \} \implica wp(S,I)$} \\
+	\textbf{Ahora ya sabiendo cuánto vale wp(S,I) podemos probar la validez de $\{ I \wedge B \}S\{ I\}$, es decir, que $\{ I \wedge B \} \implica wp(S,I)$} \\
 	\vspace{2mm}
 	$I \wedge B \implica wp(S,I)$ $\equiv$\\
 	\vspace{2mm}
@@ -397,24 +400,24 @@ Luego, hay que demostrar:
 	\textbf{Luego, queda demostrado que $I \wedge \neg B \implica QC$}. \\
 
 
-	\item \textbf{$\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<V_0 \}$}\\
+	\item \textbf{$\{ I \wedge B \wedge fv= v_0 \}S\{ fv<v_0 \}$}\\
 	\vspace{2mm} 
-	\textbf{Hay que probar que $\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$}.\\
+	\textbf{Hay que probar que $\{ I \wedge B \wedge fv= v_0 \} \implica wp(S,fv<v_0)$}.\\
 	\vspace{2mm}
-	\textbf{Resuelvo primero wp(S,$Fv<v_0$)}\\
+	\textbf{Resuelvo primero wp(S,$fv<v_0$)}\\
 	\vspace{2mm}
 	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,$Fv<v_0$) $\equiv$ wp(Sif,S4,$Fv<v_0$) $\equiv$ wp(Sif, wp(S4,$Fv<v_0$))} \\
+	\textbf{Luego, wp(S,$fv<v_0$) $\equiv$ wp(Sif,S4,$fv<v_0$) $\equiv$ wp(Sif, wp(S4,$fv<v_0$))} \\
 	\vspace{6mm}
-	\textbf{Resuelvo $wp (S4,Fv<v_0)$}\\
-	$wp (S4,Fv<v_0) \equiv wp (i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
+	\textbf{Resuelvo $wp (S4,fv<v_0)$}\\
+	$wp(S4,fv<v_0) \equiv wp(i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
 	\vspace{2mm}
 	$True \land |eventos|-i-1<v_0$  $\equiv |eventos|-i-1<v_0$ \\
 	\vspace{6mm}
-	\textbf{Resuelvo wp (Sif,$|eventos|-i-1<v_0$)}\\
+	\textbf{Resuelvo wp(Sif,$|eventos|-i-1<v_0$)}\\
 	\vspace{2mm}
-	wp (Sif,$|eventos|-i-1<v_0$) $\equiv$ \\
+	wp(Sif,$|eventos|-i-1<v_0$) $\equiv$ \\
 	\vspace{2mm}
 	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$\\
 	\vspace{2mm}
@@ -442,11 +445,11 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$ \\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,$Fv<v_0$) $\equiv$ $0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$}\\
+	\textbf{Luego, wp(S,$fv<v_0$) $\equiv$ $0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$}\\
 	\vspace{6mm}
-	\textbf{Ahora ya sabiendo cuanto vale wp(S,$Fv<v_0$) podemos probar la validez de $\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$, es decir, que $\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$} \\
+	\textbf{Ahora ya sabiendo cuanto vale wp(S,$fv<v_0$) podemos probar la validez de $\{ I \wedge B \wedge fv= v_0 \}S\{ fv<v_0 \}$, es decir, que $\{ I \wedge B \wedge fv= v_0 \} \implica wp(S,fv<v_0)$} \\
 	\vspace{2mm}
-	$\{ I \wedge B \wedge Fv= v_0 \} \implica wp(S,Fv<v_0)$ $ \equiv$ \\
+	$\{ I \wedge B \wedge fv= v_0 \} \implica wp(S,fv<v_0)$ $ \equiv$ \\
 	\vspace{2mm}
 	\textbf{(Para simplificar escribo a I como $0\leq i \leq |eventos| \wedge res_i$)}\\
 	\vspace{2mm}
@@ -454,21 +457,21 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$res_i \wedge 0\leq i<|evento| \wedge |eventos|-i = v_0 \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<v_0$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Asumo que vale ($I \wedge B \wedge Fv= v_0$))}\\
+	\textbf{Como $0 \leq i <|eventos|$ está en el antecedente y en el consecuente, lo puedo sacar del consecuente}\\
 	\vspace{2mm}
-	$True\wedge True \wedge |eventos|-i = v_0 \implica True \wedge$ $|eventos|-i-1<v_0$ $\equiv$ \\
+	$res_i \wedge 0\leq i<|evento| \wedge |eventos|-i = v_0 \implica$ $|eventos|-i-1<v_0$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Reemplazo a $v_0$ por Fv ya que asumimos que vale)}\\
+	\textbf{Asumo que vale ($I \wedge B \wedge fv= v_0$) y reemplazo a $v_0$ por fv}\\
 	\vspace{2mm}
-	$|eventos|-i = v_0 \implica |eventos|-i-1<|eventos|-i$ $\equiv$ \\
+	$|eventos|-i-1<|eventos|-i$ $\equiv$ \\
 	\vspace{2mm}
-	$ True\implica -1<0 $ $\equiv$ \\
+	$-1<0 $ $\equiv$ \\
 	\vspace{2mm}
-	$ True\implica True $ \\
+	$True $ \\
 	\vspace{4mm}
-	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= v_0 \}S\{ Fv<v_0 \}$ vale.}
+	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge fv= v_0 \}S\{ fv<v_0 \}$ vale.}
 
-	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} \\
+	\item \textbf{$I \wedge fv\leq0 \implica \neg B$} \\
 	\vspace{2mm}
 	$0\leq i \leq |eventos| \wedge res_i \wedge |eventos|-i \leq 0 \implica i \geq |eventos|$ $\equiv$ \\
 	\vspace{2mm}
@@ -476,20 +479,20 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$ res_i \wedge i= |eventos| \implica i \geq |eventos|$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Asumo que vale ($I \wedge Fv\leq0$)) }\\
+	\textbf{(Asumo que vale ($I \wedge fv\leq0$)) }\\
 	\vspace{2mm}
 	\textbf{(Reemplazo a i por $i=|eventos|$ ya que asumimos que vale)}\\
 	\vspace{2mm}
-	$True \wedge i=|eventos| \implica |eventos| \geq |eventos|$ $\equiv$ \\
-	$True  \implica  True$ \\
+	$res_i \wedge i=|eventos| \implica |eventos| \geq |eventos|$ $\equiv$ \\
+	$True$ \\
 	\vspace{3mm}
-	\textbf{Luego, queda demostrado que $I \wedge FV\leq0 \implica \neg B$.}
+	\textbf{Luego, queda demostrado que $I \wedge fv\leq0 \implica \neg B$.}
 \end{enumerate}
 \textbf{Finalmente queda demostrada la correcitud del ciclo.}\\
 \vspace{2mm}
 Volviendo al principio, queriamos demostrar:\\
-$P \implicaLuego wp(S,Q) \equiv P\implicaLuego wp(S1,S2,S3,Q)$$ \equiv$\\
-$P\implicaLuego wp(S1,S2,wp(S3,Q)) \equiv P\implicaLuego wp(S1,S2,PC) \equiv P\implicaLuego wp(S1,wp(S2,PC)) $\\
+$P \implica wp(S,Q) \equiv P\implica wp(S1;S2;S3,Q)$$ \equiv$\\
+$P\implica wp(S1;S2,wp(S3,Q)) \equiv P\implica wp(S1;S2,PC) \equiv P\implica wp(S1,wp(S2,PC)) $\\
 \vspace{3mm}
 \textbf{Resuelvo wp(S1,wp(S2,PC))}\\
 \vspace{2mm}
@@ -512,11 +515,11 @@ $True$\\
 \vspace{2mm}
 \textbf{Luego wp(S,Q)$\equiv$ True}\\
 \vspace{2mm}
-\textbf{Ahora ya sabiendo cuanto vale wp(S,Q) podemos probar la validez de \{ P \}S\{ Q \}, es decir, que $P \implicaLuego wp(S,Q)$ vale.} \\
+\textbf{Ahora ya sabiendo cuanto vale wp(S,Q) podemos probar la validez de \{ P \}S\{ Q \}, es decir, que $P \implica wp(S,Q)$ vale.} \\
 \vspace{2mm}
-$P \implicaLuego wp(S,Q)$ $\equiv$\\
+$P \implica wp(S,Q)$ $\equiv$\\
 \vspace{2mm}
-$P \implicaLuego True$\\
+$P \implica True$\\
 \vspace{2mm}
 \textbf{Luego, queda demostrado que \{ P \}S\{ Q \} vale.}
 
