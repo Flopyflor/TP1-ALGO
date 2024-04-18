@@ -259,9 +259,9 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$res= recurso$ $\wedge$ i=0 $\implica 0\leq i\leq|eventos| \wedge$ res=recurso$(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \equiv$\\
 	\vspace{3mm}
-	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}.\\
+	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}\\
 	\vspace{3mm}
-	\textbf{(Reemplazo en I a i por i=0 (ya que asumimos que vale))}.\\
+	\textbf{(Reemplazo en I a i por i=0 (ya que asumimos que vale))}\\
 	\vspace{3mm}
 	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)}\equiv$\\
 	\vspace{2mm}
@@ -279,13 +279,13 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \wedge i \geq |eventos| \implica QC \equiv $ \\
 	\vspace{2mm}
-	\textbf{(Como $i \leq |eventos| \wedge i\geq |eventos|$, luego $i=|eventos|$)}.\\
+	\textbf{(Como $i \leq |eventos| \wedge i\geq |eventos|$, luego $i=|eventos|$)}\\
 	\vspace{2mm}
 	$i = |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(evento,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}  \implica QC \equiv $ \\
 	\vspace{3mm}
-	\textbf{(Asumo que vale ($I \wedge \neg B$) (luego vale cada termino que lo compone))}.\\
+	\textbf{(Asumo que vale ($I \wedge \neg B$) (luego vale cada termino que lo compone))}\\
 	\vspace{3mm}
-	\textbf{(Reemplazo en ($I \wedge \neg B $) a i por $i= |eventos|$ (ya que asumimos que vale))}.\\
+	\textbf{(Reemplazo en ($I \wedge \neg B $) a i por $i= |eventos|$ (ya que asumimos que vale))}\\
 	\vspace{3mm}
 	$i = |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,|eventos|),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,|eventos|),F)} \implica QC \equiv $ \\
 	\vspace{2mm}
@@ -317,11 +317,13 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c))$)} \\
 	\vspace{2mm}
-	$(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c)) $ $\equiv$ \\
+	$eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c) $ $\equiv$ \\
 	\vspace{2mm}
 	$eventos[i]=true \wedge  |eventos|-i-1<vo$ \\
 	\vspace{2mm}
 	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s))$ )} \\
+	\vspace{2mm}
+	$eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s) $ $\equiv$ \\
 	\vspace{2mm}
 	$eventos[i]=false \wedge  |eventos|-i-1<vo$ \\
 	\vspace{2mm}
@@ -353,7 +355,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$True\wedge True \wedge |eventos|-i = vo \implica True \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
 	\vspace{2mm}
-	\textbf{(Reemplazo a Vo por Fv ya que asumimos que vale)}\\
+	\textbf{(Reemplazo a vo por Fv ya que asumimos que vale)}\\
 	\vspace{2mm}
 	$|eventos|-i = vo \implica |eventos|-i-1<|eventos|-i$ $\equiv$ \\
 	\vspace{2mm}
@@ -361,11 +363,27 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$ True\implica True $ \\
 	\vspace{4mm}
-	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$ vale}
+	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$ vale.}
 
-	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} 
+	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} \\
 	\vspace{2mm}
-
+	$0\leq i \leq |eventos| \wedge res_i \wedge |eventos|-i \leq 0 \implica i \geq |eventos|$ $\equiv$ \\
+	\vspace{2mm}
+	$0\leq i \leq |eventos| \wedge res_i \wedge |eventos| \leq i \implica i \geq |eventos|$ $\equiv$ \\
+	\vspace{2mm}
+	$ res_i \wedge i= |eventos| \implica i \geq |eventos|$ $\equiv$ \\
+	\vspace{2mm}
+	\textbf{(Asumo que vale ($I \wedge FV\leq0$)) }\\
+	\vspace{2mm}
+	\textbf{(Reemplazo a i por $i=|eventos|$ ya que asumimos que vale)}\\
+	\vspace{2mm}
+	$True \wedge i=|eventos| \implica |eventos| \geq |eventos|$ $\equiv$ \\
+	$True  \implica  True$ \\
+	\vspace{3mm}
+	\textbf{Luego, queda demostrado que $I \wedge FV\leq0 \implica \neg B$.}
+	
+	
+	
 
 
 \end{enumerate}
