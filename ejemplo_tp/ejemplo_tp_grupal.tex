@@ -61,7 +61,7 @@
 \end{proc}
 
 \pred{todosElementosDeLasListasPositivos}{pagos: \TLista{\TLista{\float}}}{
-     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][j] > 0}
+     \paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|pagos| \land 0\leq t <|pagos[i]|} \implicaLuego pagos[i][t] > 0}
 }
 
 \pred{eventosValidos}{eventos: \TLista{\TLista{\nat}}, pagos: \TLista{\TLista{\float}}}{
@@ -69,7 +69,7 @@
 }
 
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
-    \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]-1|}{apuestas[i][t]}=1}}
+    \paraTodo[unalinea]{i}{\ent}{0 \leq i<|apuestas| \implicaLuego \sum\limits_{t=0}^{|apuestas[i]|-1}{apuestas[i][t]}=1}}
 
 \pred{elPrincipioSigueIgual}{oldtrayectorias: \TLista{\TLista{\float}}, trayectorias:\TLista{\TLista{\float}}}{
 	\paraTodo[unalinea]{i}{\ent}{0 \leq i < |trayectorias|  \implicaLuego 
@@ -78,8 +78,8 @@
 
 \pred{estaBienCalculado}{trayectorias: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, 
 cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, \\ pagos: \TLista{\TLista{\float}}}{
-	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \leq i < |cooperan| \land 0 < t \le |eventos[0]|) \\ \implicaLuego 
-	trayectorias[i][t] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{(0 \leq i < |cooperan| \land 0 \le t < |eventos[0]|) \\ \implicaLuego 
+	trayectorias[i][t+1] = calcularPlataConFondo(i, t, cooperan, apuestas, pagos, eventos, trayectorias)}}
 }
 
 \aux{calcularPlataConFondo}{individuo: \nat, tiempo: \nat, cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}}, 
@@ -112,7 +112,10 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
     \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \\ \neg \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
 
 \pred {esMaximoLocal}{i: \ent, trayectoria: \TLista{\float}}{
-    |trayectoria| = 1 \oLuego \\ (i = 0 \land trayectoria[0] > trayectoria[1]) \lor \\ (|trayectoria| \geq 3 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1]) \oLuego \\ (i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2])}
+    |trayectoria| = 1 \oLuego \\
+	(i = 0 \land trayectoria[0] > trayectoria[1]) \lor \\
+	(i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2]) \lor \\
+	(|trayectoria| \geq 3 \land 0 < i < |trayectoria| -1 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1])}
 
 \subsection{individuoDecideSiCooperarONo}
 
@@ -124,17 +127,20 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		eventosValidos(eventos, pagos) \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
+		seApuestaTodo(apuestas) \land \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ % TODO: habíamos dicho que recuros != 0 no?
 		}
 		\asegura{ \\
 		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
 		\IfThenElse{cooperan[individuo] = \True \\}
-		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
-		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
-		{fondoDivididoEnTurno(|eventos|, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
-		recursosDeNoCooperadorEnTurno(|eventos|, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
+		{fondoDivididoEnTurno(|eventos|-1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
+		recursosDeNoCooperadorEnTurno(|eventos|-1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
+		{fondoDivididoEnTurno(|eventos|-1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
+		recursosDeNoCooperadorEnTurno(|eventos|-1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
 	}
+	% TODO si no hay eventos (tipo |eventos[individuo]| = 0) qué hacemos? pq divide los recursos 
+	% iniciales de los colaboradores y los suma, pero dudo que en el "turno -1" aplique el fondo
 
 \end{proc}
 
@@ -144,7 +150,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \aux{fondoDivididoEnTurno}{turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
 recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{\\
-recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas)})
+recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas, eventos)})
 }
 \aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
 	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo+1, |cooperan|}
@@ -159,7 +165,7 @@ recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno
 }
 
 \aux{recursosDeCooperadoresIniciales}{cooperan: \TLista{\bool}, recursos: \TLista{\float}}{\float}{
-	\\ \sum\limits_{i=0}^{|cooperan|}{\IfThenElse{cooperan[i] = \True}{\frac{recursos[i]}{|cooperan|}}{0}}
+	\\ \sum\limits_{i=0}^{|cooperan|-1}{\IfThenElse{cooperan[i] = \True}{\frac{recursos[i]}{|cooperan|}}{0}}
 }
 
 \aux{tasaEnTurno}{turno: \ent, individuo: \ent, pagos: \TLista{\TLista{\float}}, 
@@ -169,10 +175,9 @@ apuestas: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\ent}}}{\float}{ \\
 
 \aux{recursosDeNoCooperadorEnTurno}{turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
 pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}, recursos: \TLista{\TLista{\float}}}{}{\\
-	recursos[individuo] * \prod\limits_{i=0}^{turno}{tasaEnTurno(turno, individuo, pagos, apuestas, eventos)} + \\
+	recursos[individuo] * \prod\limits_{t=0}^{turno}{tasaEnTurno(t, individuo, pagos, apuestas, eventos)} + \\
 	\sum\limits_{i=0}^{turno}{(fondoDivididoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas)} *\\
  	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)} \text{)} 
-	% TODO: no estoy pudiendo poner un linebreak acá pq está dentro de una sumatoria
 }
 
 \subsection{individuoActualizaApuesta}
@@ -183,7 +188,7 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 \end{proc}
 
 \pred{esApuestaSimilar}{i: \nat, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
-	(|apuestas| = |s|) \land \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
+	(|apuestas| = |s|) \yLuego \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
 }
 \section{Ejercicio 2}
 \begin{flushleft}
