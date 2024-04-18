@@ -283,7 +283,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$i = |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(evento,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}  \implica QC \equiv $ \\
 	\vspace{3mm}
-	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}.\\
+	\textbf{(Asumo que vale ($I \wedge \neg B$) (luego vale cada termino que lo compone))}.\\
 	\vspace{3mm}
 	\textbf{(Reemplazo en ($I \wedge \neg B $) a i por $i= |eventos|$ (ya que asumimos que vale))}.\\
 	\vspace{3mm}
@@ -294,8 +294,77 @@ Luego, hay que demostrar:
 	$QC \implica QC$ \\
 	\vspace{3mm}
 	\textbf{Luego, queda demostrado que $I \wedge \neg B \implica QC$}. \\
-	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}
+	\item \textbf{$\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$}\\
+	\vspace{2mm} 
+	\textbf{Hay que probar que $\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$}.\\
+	\vspace{2mm}
+	\textbf{Resuelvo primero wp(S,$Fv<vo$)}\\
+	\vspace{2mm}
+	\textbf{(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1)}.\\
+	\vspace{2mm}
+	\textbf{Luego, wp(S,$Fv<vo$) $\equiv$ wp(Sif,S4,$Fv<vo$) $\equiv$ wp(Sif, wp(S4,$Fv<vo$))} \\
+	\vspace{6mm}
+	\textbf{Resuelvo $wp (S4,Fv<vo)$}\\
+	$wp (S4,Fv<vo) \equiv wp (i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
+	\vspace{2mm}
+	$True \land |eventos|-i-1<vo$  $\equiv |eventos|-i-1<vo$ \\
+	\vspace{6mm}
+	\textbf{Resuelvo wp (Sif,$|eventos|-i-1<vo$)}\\
+	\vspace{2mm}
+	wp (Sif,$|eventos|-i-1<vo$) $\equiv$ \\
+	\vspace{2mm}
+	$def (eventos[i]:=true) \wedge ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s)))$\\
+	\vspace{2mm}
+	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c))$)} \\
+	\vspace{2mm}
+	$(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c)) $ $\equiv$ \\
+	\vspace{2mm}
+	$eventos[i]=true \wedge  |eventos|-i-1<vo$ \\
+	\vspace{2mm}
+	\textbf{(Resuelvo $(eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s))$ )} \\
+	\vspace{2mm}
+	$eventos[i]=false \wedge  |eventos|-i-1<vo$ \\
+	\vspace{2mm}
+	\textbf{(Juntando todo)} \\
+	\vspace{2mm}
+	$def (eventos[i]:=true) \wedge ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s)))$ $\equiv$ \\
+	\vspace{2mm}
+	$0 \leq i <|eventos| \wedge$ (($eventos[i]=true \wedge  |eventos|-i-1<vo$) $\vee$  ($eventos[i]=false \wedge  |eventos|-i-1<vo$)) $\equiv$\\
+	\vspace{2mm}
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo \wedge (eventos[i]=true \vee eventos[i]=false)$ $\equiv$ \\
+	\vspace{2mm}
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo \wedge True$ $\equiv$ \\
+	\vspace{2mm}
+	$0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ \\
+	\vspace{2mm}
+	\textbf{Luego, wp(S,$Fv<vo$) $\equiv$ $0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$}\\
+	\vspace{6mm}
+	\textbf{Ahora ya sabiendo cuanto vale wp(S,$Fv<vo$) podemos probar la validez de $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$, es decir, que $\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$} \\
+	\vspace{2mm}
+	$\{ I \wedge B \wedge Fv= vo \} \implica wp(S,Fv<vo)$ $ \equiv$ \\
+	\vspace{2mm}
+	\textbf{(Para simplificar escribo a I como $0\leq i \leq |eventos| \wedge res_i$)}\\
+	\vspace{2mm}
+	$0\leq i \leq |eventos| \wedge res_i \wedge $ $i < |eventos|$ $\wedge |eventos|-i = vo \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	\vspace{2mm}
+	$res_i \wedge 0\leq i<|evento| \wedge |eventos|-i = vo \implica 0 \leq i <|eventos| \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	\vspace{2mm}
+	\textbf{(Asumo que vale ($I \wedge B \wedge Fv= vo$))}\\
+	\vspace{2mm}
+	$True\wedge True \wedge |eventos|-i = vo \implica True \wedge$ $|eventos|-i-1<vo$ $\equiv$ \\
+	\vspace{2mm}
+	\textbf{(Reemplazo a Vo por Fv ya que asumimos que vale)}\\
+	\vspace{2mm}
+	$|eventos|-i = vo \implica |eventos|-i-1<|eventos|-i$ $\equiv$ \\
+	\vspace{2mm}
+	$ True\implica -1<0 $ $\equiv$ \\
+	\vspace{2mm}
+	$ True\implica True $ \\
+	\vspace{4mm}
+	\textbf{Luego, queda demostrado que $\{ I \wedge B \wedge Fv= vo \}S\{ Fv<Vo \}$ vale}
+
 	\item \textbf{$I \wedge FV\leq0 \implica \neg B$} 
+	\vspace{2mm}
 
 
 
