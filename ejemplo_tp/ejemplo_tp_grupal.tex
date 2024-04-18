@@ -4,7 +4,6 @@
 \input{AEDmacros}
 \usepackage{caratula} % Version modificada para usar las macros de algo1 de ~> https://github.com/bcardiff/dc-tex
 
-
 \titulo{Trabajo práctico 1: Especificación y WP}
 \subtitulo{“Fondo Monetario Común”}
 
@@ -187,5 +186,69 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	(|apuestas| = |s|) \land \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
 }
 \section{Ejercicio 2}
+\begin{flushleft}
+Queremos probar  la validez de la siguiente tripla de Hoare:
+\{ P \}S\{ Q \} la cual es valida si solo si (P) implicaLuego (wp(S,Q)).\\
+                                        %aca va un implica luego en simbolos pero nose pq no le gusta 
+\vspace{3mm}
+P(precondición)=\{ $apuesta_c + apuesta_s =1$ y $pago_c>0$ y $pago_s>0$ y $apuesta_c>0$ y $apuesta_s>0$ y $recurso>0$\}\\
+%hay que reemplazar los y por el simbolo pero no se porque no me lo toma 
+\vspace{3mm}
+Q(postcondición)=\{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$\}\\
+\vspace{30mm}
+S(programa)=
+\begin{lstlisting}
+	res := recurso;
+	i := 0;
+	while (i < eventos.size()) do
+	    if eventos[i]then
+		   res:= (res.apuesta_c)pago_c
+		else
+		   res:= (res.apuesta_s)pago_s
+		endif
+		i := i + 1
+	endwhile
+		\end{lstlisting} 
+
+\vspace{3mm}
+Dividimos el programa en tres partes (S1,S2,S3):\\
+\begin{lstlisting}
+	S1= res := recurso;
+	S2= i := 0;
+	S3= while (i < eventos.size()) do
+	     if eventos[i]then
+		   res:= (res.apuesta_c)pago_c
+		 else
+		   res:= (res.apuesta_s)pago_s
+		 endif
+		i := i + 1
+	endwhile
+		\end{lstlisting} 
+
+\vspace{3mm}
+Luego, queriamos probar que (P) implicaLuego (wp(S,Q)).Esto es lo mismo que probar que (P) implicaLuego (wp(S1,S2,S3,Q)).\\
+\vspace{3mm}
+Primero debemos hallar (wp(S1,S2,S3,Q)) = wp(s1,s2(wp(S3,Q))).\\
+\vspace{3mm}
+Tomamos como wp(S3,Q) = PC (precondicion del ciclo)\\
+\vspace{3mm}
+PC= \{res= recurso y i=0\}\\
+\vspace{3mm}
+Demostracion de la correcitud del ciclo:\\
+\vspace{3mm}
+Para ello necesitamos: \\
+\begin{enumerate} \setlength\itemsep{0cm}
+	\item I (invariante)= 0<i<eventos y res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$
+	\item PC= \{res= recurso y i=0\}
+	\item QC (postcondicion del ciclo)= \{res=recurso($apuesta_cpago_c)^{\#(evento,T)}$($apuesta_spago_s)^{\#(evento,F)}$ y i=|eventos|\}
+	\item BC (guarda del ciclo) = i < eventos
+	\item FV (función variante) = eventos-i
+	%no me deja poner la longitud de eventos porque lo pone raro cuadno lo  paso a pdf, y despues el < tambien me lo pone mal
+	%tambien hay que poner los y como simbolos pero no me deja, nose porque.
+\end{enumerate}
+
+\end{flushleft}
+
+
 
 \end{document}
