@@ -47,7 +47,9 @@
 		|trayectorias| = |eventos| = |cooperan| = |apuestas| = |pagos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperan| \implicaLuego |trayectorias[i]| = 1 \land |apuestas[i]| = |pagos[i]|} \land \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |eventos| \implicaLuego |eventos[i]| = |eventos[0]|} \land \\
-		todosElementosDeLasListasPositivos(pagos) \land \\ todosElementosDeLasListasPositivos(trayectorias) \land \\
+		todosElementosDeLasListasPositivos(pagos) \land \\ 
+		todosElementosDeLasListasPositivos(trayectorias) \land \\
+		todosElementosDeLasListasPositivos(apuestas) \land \\
 		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)\\
 	}
 	
@@ -92,7 +94,7 @@ pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, trayectorias: 
 \aux{nuevaPlataSinFondo}{individuo: \nat, tiempo: \nat, apuestas: \TLista{\TLista{\float}}, 
 pagos: \TLista{\TLista{\float}}, eventos: \TLista{\TLista{\nat}}, \\ trayectorias: \TLista{\TLista{\float}}}
 {\float}{\\
-	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \\ *trayectorias[individuo][tiempo - 1]
+	apuesta[individuo][eventos[individuo][tiempo]] * pagos[individuo][eventos[individuo][tiempo]] \\ *trayectorias[individuo][tiempo]
 }
 
 \aux{fondoDistribuido}{tiempo: \ent, apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}, 
@@ -115,7 +117,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
     |trayectoria| = 1 \oLuego \\
 	(i = 0 \land trayectoria[0] > trayectoria[1]) \lor \\
 	(i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2]) \lor \\
-	(|trayectoria| \geq 3 \land 0 < i < |trayectoria| -1 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1])}
+	(0 < i < |trayectoria| -1 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1])}
 
 \subsection{individuoDecideSiCooperarONo}
 
@@ -134,10 +136,10 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
 		\IfThenElse{cooperan[individuo] = \True \\}
-		{fondoDivididoEnTurno(|eventos|-1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
-		recursosDeNoCooperadorEnTurno(|eventos|-1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
-		{fondoDivididoEnTurno(|eventos|-1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
-		recursosDeNoCooperadorEnTurno(|eventos|-1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
+		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
+		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
+		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
+		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
 	}
 	% TODO si no hay eventos (tipo |eventos[individuo]| = 0) qué hacemos? pq divide los recursos 
 	% iniciales de los colaboradores y los suma, pero dudo que en el "turno -1" aplique el fondo
@@ -145,7 +147,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \end{proc}
 \vspace{5mm}
 
-\pred{soloSeActualizoElIndividuo}{individuo, cooperanV, cooperanN}{
+\pred{soloSeActualizoElIndividuo}{individuo: \ent, cooperanV: \TLista{\bool}, cooperanN: \TLista{\bool}}{
 	\paraTodo[unalinea]{i}{\ent}{0 \le i < |cooperanV| \land i \neq individuo \implicaLuego cooperanV[i] = cooperanN[i]}
 }
 
@@ -153,11 +155,11 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}}{\float}{\\
 recursosDeCooperadoresIniciales(cooperan, recursos) * (\prod\limits_{k=0}^{turno}{tasasDeCooperadores(k, cooperan, pagos, apuestas, eventos)})
 }
-\aux{cooperanSiCoopera}{individuo, cooperan}{\TLista{\bool}}{
+\aux{cooperanSiCoopera}{individuo: \ent, cooperan: \TLista{\bool}}{\TLista{\bool}}{
 	\\ \sub{cooperan, 0, individuo} \masmas \langle \True \rangle \masmas \sub{cooperan, individuo+1, |cooperan|}
 }
 
-\aux{cooperanSiNoCoopera}{individuo, cooperan}{\TLista{\bool}}{
+\aux{cooperanSiNoCoopera}{individuo: \ent, cooperan: \TLista{\bool}}{\TLista{\bool}}{
 	\\ \sub{cooperan, 0, individuo} \masmas \langle \False \rangle \masmas \sub{cooperan, individuo+1, |cooperan|}
 }
 
@@ -186,7 +188,7 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 \begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , 
 	\Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }
 	
-	\requiere{\\ %TODO dejo provisorio el requiere del 4 y vemos si lo dejamos igual o hay que cambiar algo 
+	\requiere{\\
 		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
 		eventosValidos(eventos, pagos) \land \\
@@ -199,8 +201,8 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	
 	\asegura{\\
 	esApuestaSimilar(individuo, apuestas, old(apuestas)) \yLuego \\
-	esApuestaValida(apuestas, pagos) \yLuego \\
-	\paraTodo[unalinea]{s}{	\TLista{\TLista{\float}}}{esApuestaSimilar(individuo , apuestas , s) \land esApuestaValida(s, pagos) \implicaLuego \\
+	esApuestaValida(individuo, apuestas, pagos) \yLuego \\
+	\paraTodo[unalinea]{s}{	\TLista{\TLista{\float}}}{esApuestaSimilar(individuo , apuestas , s) \land esApuestaValida(individuo, s, pagos) \implicaLuego \\
 	dineroFinal(individuo, recursos , cooperan , apuestas , pagos , eventos)  \\
 	\geq dineroFinal(individuo, recursos , cooperan , s , pagos , eventos)}
 	}
@@ -208,14 +210,13 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \end{proc}
 
-\aux{rindeMasCooperar}{completar...} {\bool}{
-\IfThenElse {0 \leq i < |cooperan| \yLuego cooperan[i] = true \implicaLuego fondoDivEnTurno > recursosDeNoCooperadorEnTurno}{true}{false}
-}
+\vspace{13mm}
 
-\aux{dineroFinal}{i: \ent , recursos: \TLista{\float} , cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}} , pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {
-\IfThenElse{(cooperan[i] = true)  \land fondoDivEnTurno(turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
-recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}) > recursosDeNoCooperadorEnTurno(turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
-pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}, recursos: \TLista{\TLista{\float}})} {\\fondoDivEnTurno}{recursosDeNoCooperadorEnTurno}
+\aux{dineroFinal}{i: \ent , recursos: \TLista{\float} , cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}} , 
+pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {\\
+	\IfThenElse{(cooperan[i] = true)} {\\fondoDivEnTurno(|eventos[0]| - 1, eventos, cooperan, 
+	recursos, pagos, apuestas)}{\\recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, i, eventos, 
+	pagos, apuestas, cooperan, recursos)}
 }
 
 
@@ -223,8 +224,10 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	(|apuestas| = |s|) \yLuego \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
 }
 
-\pred{esApuestaValida}{apuestas: \TLista{\TLista{float}}, pagos: \TLista{\TLista{\float}}}{
-	( |apuestas| = |pagos| )  \land ( \sum\limits_{i=0}^{|apuestas|-1}{apuestas[i]} = 1 ) \land \paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas| \implicaLuego apuestas[j] \geq 0}   % que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
+\pred{esApuestaValida}{i: \ent , apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}}{
+	|apuestas[i]| = |pagos[i]| \land ( \sum\limits_{k=0}^{|apuestas|-1}{apuestas[i][k]} = 1 ) \land 
+	\paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas[i]| \implicaLuego apuestas[i][j] \geq 0}   
+	% que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
 }
 
 \section{Ejercicio 2}
@@ -274,19 +277,23 @@ que se definió en la teórica. \\
 \vspace{3mm}
 Luego, queriamos probar que P $\implicaLuego$ wp(S,Q). Esto es lo mismo que probar que P $\implicaLuego$ wp(S1;S2;S3,Q).\\
 \vspace{3mm}
-Primero debemos hallar \textbf{wp(S1;S2;S3,Q) $\equiv$ wp(s1,s2(wp(S3,Q)))}.\\
+Primero debemos hallar \textbf{wp(S1;S2;S3,Q) $\equiv$ wp(S1;S2,wp(S3,Q))}.\\
 \vspace{3mm}
 \textbf{wp(S3,Q)} = PC (precondición del ciclo) = \{res = recurso $\wedge$ i=0\}\\
-\vspace{5mm}
+\vspace{3mm}
+La PC la planteamos a partir de la definición del ciclo. 
+Nuestras demostraciones no pueden asegurar que esta PC es la más débil, 
+pero sí puede asegurar que implica a la \textbf{wp}, si se cumple la correctitud del ciclo.\\
+\vspace{10mm}
 \textbf{Demostración de la correcitud del ciclo:}\\
 \vspace{3mm}
 Para ello necesitamos: 
 \begin{enumerate} \setlength\itemsep{0cm}
-	\item \textbf{I (invariante)} = $0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}$
-	\item \textbf{PC} = $\{res= recurso \wedge i=0\}$
-	\item \textbf{QC (postcondición del ciclo)} = $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
-	\item \textbf{BC (guarda del ciclo)} = $i < |eventos|$
-	\item \textbf{fv (función variante)} = $|eventos|-i$
+	\item \textbf{I (invariante)} $\equiv 0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}$
+	\item \textbf{PC} $\equiv \{res= recurso \wedge i=0\}$
+	\item \textbf{QC (postcondición del ciclo)} $\equiv \{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
+	\item \textbf{BC (guarda del ciclo)} $\equiv i < |eventos|$
+	\item \textbf{fv (función variante)} $= |eventos|-i$
 \end{enumerate}
 
 Luego, hay que demostrar:
@@ -302,21 +309,21 @@ Luego, hay que demostrar:
 \begin{enumerate} \setlength\itemsep{4mm}
 	\item \textbf{$PC \implica I$} \\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0 $\implica 0\leq i\leq|eventos| \wedge$ res=recurso$(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \equiv$\\
+	$res= recurso$ $\wedge$ i = 0 $\implica 0\leq i\leq|eventos| \wedge$ res = recurso$(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)} \equiv$\\
 	\vspace{3mm}
 	\textbf{(Asumo que vale PC (luego vale cada termino que lo compone))}\\
 	\vspace{3mm}
 	\textbf{(Reemplazo en I a i por i=0 (ya que asumimos que vale))}\\
 	\vspace{3mm}
-	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)} \equiv$\\
+	$res= recurso$ $\wedge$ i = 0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)} \equiv$\\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(\lvacia,T)}$($apuesta_spago_s)^{\#(\lvacia,F)} \equiv$ \\
+	$res= recurso$ $\wedge$ i = 0  $\implica  True  \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(\lvacia,T)}$($apuesta_spago_s)^{\#(\lvacia,F)} \equiv$ \\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0} \equiv $\\
+	$res= recurso$ $\wedge$ i = 0  $\implica$ $res=recurso$($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0} \equiv $\\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$ $\equiv $\\
+	$res= recurso$ $\wedge$ i = 0  $\implica$ $res=recurso$ $\equiv $\\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$ True \\
+	$True$ \\
 	\vspace{3mm}
 	\textbf{Luego, queda demostrado que PC $\implica$ I}.\\
 
@@ -344,7 +351,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$wp(Sif,Qif)$ $\equiv$\\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$\\
+	$def (eventos[i]) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$\\
 	\vspace{6mm}
 	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))$) }\\
 	\vspace{2mm}
@@ -392,7 +399,7 @@ Luego, hay que demostrar:
 	\vspace{6mm}
 	\textbf{(Juntando todo)} \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$ $\equiv$\\
+	$def (eventos[i]) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i < |eventos| \land ((eventos[i]=true \wedge resIf)\vee (eventos[i]=false \wedge resIf))$ $\equiv$\\
 	\vspace{2mm}
@@ -445,7 +452,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
-	\textbf{Luego, wp(S,$fv<v_0$) $\equiv$ wp(Sif,S4,$fv<v_0$) $\equiv$ wp(Sif, wp(S4,$fv<v_0$))} \\
+	\textbf{Luego, wp(S,$fv<v_0$) $\equiv$ wp(Sif;S4,$fv<v_0$) $\equiv$ wp(Sif, wp(S4,$fv<v_0$))} \\
 	\vspace{6mm}
 	\textbf{Resuelvo $wp (S4,fv<v_0)$}\\
 	$wp(S4,fv<v_0) \equiv wp(i:= i+1,|eventos|-i <vo) \equiv def (i+1) \land (|eventos|-i<vo)_{i+1}^{i} \equiv$ \\
@@ -456,7 +463,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	wp(Sif,$|eventos|-i-1<v_0$) $\equiv$ \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$\\
+	$def (eventos[i]) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$\\
 	\vspace{2mm}
 	\textbf{(Resuelvo $(eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))$)} \\
 	\vspace{2mm}
@@ -472,7 +479,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	\textbf{(Juntando todo)} \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$ $\equiv$ \\
+	$def (eventos[i]) \land ((eventos[i]=true \wedge wp (res:=(res.apuesta_c)pago_c,|eventos|-i-1<v_0))\vee (eventos[i]=false \wedge wp (res:=(res.apuesta_s)pago_s,|eventos|-i-1<v_0)))$ $\equiv$ \\
 	\vspace{2mm}
 	$0 \leq i <|eventos| \land$ (($eventos[i]=true \wedge  |eventos|-i-1<v_0$) $\vee$  ($eventos[i]=false \wedge  |eventos|-i-1<v_0$)) $\equiv$\\
 	\vspace{2mm}
