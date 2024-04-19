@@ -182,10 +182,25 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \subsection{individuoActualizaApuesta}
 
-\begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , \Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }{}
+\begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , \Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }{
+
+		\asegura{\\
+		|old(apuestas)| = |apuestas| \\  \land   \paraTodo[unalinea]{s}{	\TLista{\TLista{\float}}}{esApuestaSimilar(individuo , apuestas , s) \implicaLuego 
+		dineroFinal(recursos , 	cooperan , apuestas , pagos , eventos)  \\
+		\geq dineroFinal(recursos , cooperan , s , pagos , eventos)
+		}
+	}
+}
 
 
 \end{proc}
+
+\aux{dineroFinal}{recursos: \TLista{\float} , cooperan: \TLista{\bool}, apuestas: \TLista{\TLista{\float}} , pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {
+\IfThenElse{(cooperan[i] = true)  \land fondoDivEnTurno(turno: \ent, eventos: \TLista{\TLista{\ent}}, cooperan: \TLista{\bool}, 
+recursos: \TLista{\float}, pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}) > recursosDeNoCooperadorEnTurno(turno: \ent, individuo: \ent, eventos: \TLista{\TLista{\ent}}, 
+pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \TLista{\bool}, recursos: \TLista{\TLista{\float}})} {\\fondoDivEnTurno}{recursosDeNoCooperadorEnTurno}
+}
+
 
 \pred{esApuestaSimilar}{i: \nat, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
 	(|apuestas| = |s|) \yLuego \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
