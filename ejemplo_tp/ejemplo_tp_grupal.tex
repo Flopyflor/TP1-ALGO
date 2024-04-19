@@ -209,7 +209,7 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 }
 
 \pred{esApuestaValida}{apuestas: \TLista{\TLista{float}}, pagos: \TLista{\TLista{\float}}}{
-	% que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
+	( |apuestas| = |pagos| )  \land ( \sum\limits_{i=0}^{|apuestas|-1}{apuestas[i]} = 1 ) \land \paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas| \implicaLuego apuestas[j] \geq 0}   % que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
 }
 
 \section{Ejercicio 2}
