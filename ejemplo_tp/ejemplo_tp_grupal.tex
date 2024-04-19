@@ -15,7 +15,7 @@
 \integrante{Allami, Florencia}{484/23}{allamiflorencia@gmail.com}
 \integrante{Bartoli, Matilda}{175/23}{bartoli.matilda@gmail.com}
 \integrante{Simon, Felipe Pedro}{135/23}{felipe.p.simon@gmail.com}
-\integrante{Sosa, Luciano}{1011/23}{sosaluciano261@gmail.com}
+\integrante{Sosa, Luciano}{1011/23}{sosaluciano020104@gmail.com}
 % Pongan cuantos integrantes quieran
 
 \graphicspath{{../static/}}
@@ -128,7 +128,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
 		seApuestaTodo(apuestas) \land \\
-		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ % TODO: habíamos dicho que recuros != 0 no?
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ 
 		}
 		\asegura{ \\
 		|old(cooperan)| = |cooperan| \yLuego \\
@@ -185,7 +185,18 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , 
 	\Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }
-
+	
+	\requiere{\\ %TODO dejo provisorio el requiere del 4 y vemos si lo dejamos igual o hay que cambiar algo 
+		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
+		eventosValidos(eventos, pagos) \land \\
+		todosElementosDeLasListasPositivos(pagos) \land \\
+		todosElementosDeLasListasPositivos(apuestas) \land \\
+		seApuestaTodo(apuestas) \land \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ 
+		}
+	
+	
 	\asegura{\\
 	esApuestaSimilar(individuo, apuestas, old(apuestas)) \yLuego \\
 	esApuestaValida(apuestas, pagos) \yLuego \\
