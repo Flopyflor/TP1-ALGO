@@ -392,7 +392,7 @@ Luego, hay que demostrar:
 	$0\leq i <|eventos| \wedge res_i \implica wp(S,I)$ \\
 	\vspace{2mm}
 	\textbf{Esto es verdad ya que wp(S,I)$\equiv$ $0\leq i <|eventos| \wedge resIf $ ($resIf=res_i$)}\\
-	\vspace{3mm}
+	\vspace{4mm}
 	\textbf {Luego, queda demostrado que $\{ I \wedge B \}S\{ I \}$ vale.}
 
 	\item \textbf{$I \wedge \neg B \implica QC$}\\
@@ -511,9 +511,9 @@ Luego, hay que demostrar:
 $P \implica wp(S,Q) \equiv P\implica wp(S1;S2;S3,Q)$$ \equiv$\\
 \vspace{2mm}
 $P\implica wp(S1;S2,wp(S3,Q)) \equiv P\implica wp(S1;S2,PC) \equiv P\implica wp(S1,wp(S2,PC)) $\\
-\vspace{3mm}
+\vspace{4mm}
 \textbf{Resuelvo wp(S1,wp(S2,PC))}\\
-\vspace{2mm}
+\vspace{4mm}
 \textbf{Resuelvo primero wp(S2,PC)}\\
 \vspace{2mm}
 $wp(S2,PC) \equiv wp(i:=0,i=0 \wedge res=recurso)$$\equiv$\\
@@ -523,7 +523,7 @@ $def (0) \wedge PC_{0}^{i}$$\equiv$\\
 $True \wedge 0=0 \wedge res=recurso$$\equiv$\\
 \vspace{2mm}
 $res=recurso$\\
-\vspace{2mm}
+\vspace{4mm}
 \textbf{Resuelvo wp(S1,res=recurso)}\\
 \vspace{2mm}
 $wp(res:=recurso,res=recurso)$$\equiv$\\
@@ -533,15 +533,15 @@ $def(recurso) \wedge (res=recurso)_{recurso}^{res}$$\equiv$\\
 $recurso=recurso$$\equiv$\\
 \vspace{2mm}
 $True$\\
-\vspace{2mm}
+\vspace{4mm}
 \textbf{Luego wp(S,Q)$\equiv$ True}\\
-\vspace{2mm}
+\vspace{4mm}
 \textbf{Ahora ya sabiendo cuanto vale wp(S,Q) podemos probar la validez de \{ P \}S\{ Q \}, es decir, que $P \implica wp(S,Q)$ vale.} \\
 \vspace{2mm}
 $P \implica wp(S,Q)$ $\equiv$\\
 \vspace{2mm}
 $P \implica True$\\
-\vspace{2mm}
+\vspace{4mm}
 \textbf{Luego, queda demostrado que \{ P \}S\{ Q \} vale.}
 
 
