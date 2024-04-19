@@ -183,15 +183,16 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 
 \subsection{individuoActualizaApuesta}
 
-\begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , \Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }{
+\begin{proc}{individuoActualizaApuesta}{\In individuo: \nat, \In recursos: \TLista{\float} , \In cooperan: \TLista{\bool} , 
+	\Inout apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}} , \In eventos: \TLista{\TLista{\nat}} }
 
-		\asegura{\\
-		|old(apuestas)| = |apuestas| \\  \land   \paraTodo[unalinea]{s}{	\TLista{\TLista{\float}}}{esApuestaSimilar(individuo , apuestas , s) \implicaLuego 
-		dineroFinal(recursos , 	cooperan , apuestas , pagos , eventos)  \\
-		\geq dineroFinal(recursos , cooperan , s , pagos , eventos)
-		}
+	\asegura{\\
+	esApuestaSimilar(individuo, apuestas, old(apuestas)) \yLuego \\
+	esApuestaValida(apuestas, pagos) \yLuego \\
+	\paraTodo[unalinea]{s}{	\TLista{\TLista{\float}}}{esApuestaSimilar(individuo , apuestas , s) \land esApuestaValida(s, pagos) \implicaLuego \\
+	dineroFinal(recursos , 	cooperan , apuestas , pagos , eventos)  \\
+	\geq dineroFinal(recursos , cooperan , s , pagos , eventos)}
 	}
-}
 
 
 \end{proc}
@@ -206,6 +207,11 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 \pred{esApuestaSimilar}{i: \nat, apuestas: \TLista{\TLista{\float}}, s: \TLista{\TLista{\float}}}{
 	(|apuestas| = |s|) \yLuego \paraTodo[unalinea]{j}{\ent}{(0 \leq j < |apuestas|) \land  (j \neq i) \implicaLuego ( apuestas[j] = s[j] )}
 }
+
+\pred{esApuestaValida}{apuestas: \TLista{\TLista{float}}, pagos: \TLista{\TLista{\float}}}{
+	% que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
+}
+
 \section{Ejercicio 2}
 \begin{flushleft}
 Queremos probar  la validez de la siguiente tripla de Hoare:
