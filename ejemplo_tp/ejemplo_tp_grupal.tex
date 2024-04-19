@@ -261,15 +261,15 @@ Luego, queriamos probar que P $\implicaLuego$ wp(S,Q). Esto es lo mismo que prob
 \vspace{3mm}
 Primero debemos hallar \textbf{wp(S1;S2;S3,Q) $\equiv$ wp(s1,s2(wp(S3,Q)))}.\\
 \vspace{3mm}
-\textbf{wp(S3,Q)} = PC (precondición del ciclo)= \{res= recurso $\wedge$ i=0\}\\
+\textbf{wp(S3,Q)} = PC (precondición del ciclo) = \{res = recurso $\wedge$ i=0\}\\
 \vspace{5mm}
 \textbf{Demostración de la correcitud del ciclo:}\\
 \vspace{3mm}
 Para ello necesitamos: 
 \begin{enumerate} \setlength\itemsep{0cm}
-	\item \textbf{I (invariante)}= $0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}$
-	\item \textbf{PC}= $\{res= recurso \wedge i=0\}$
-	\item \textbf{QC (postcondición del ciclo)}= $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
+	\item \textbf{I (invariante)} = $0\leq i \leq |eventos| \wedge res=recurso(apuesta_cpago_c)^{\#(subseq(eventos,0,i),T)}(apuesta_spago_s)^{\#(subseq(eventos,0,i),F)}$
+	\item \textbf{PC} = $\{res= recurso \wedge i=0\}$
+	\item \textbf{QC (postcondición del ciclo)} = $\{res=recurso(apuesta_cpago_c)^{\#(eventos,T)}(apuesta_spago_s)^{\#(eventos,F)} \wedge i=|eventos|$\}
 	\item \textbf{BC (guarda del ciclo)} = $i < |eventos|$
 	\item \textbf{fv (función variante)} = $|eventos|-i$
 \end{enumerate}
@@ -293,9 +293,9 @@ Luego, hay que demostrar:
 	\vspace{3mm}
 	\textbf{(Reemplazo en I a i por i=0 (ya que asumimos que vale))}\\
 	\vspace{3mm}
-	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)}\equiv$\\
+	$res= recurso$ $\wedge$ i=0 $\implica 0\leq 0\leq|eventos| \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(subseq(eventos,0,0),T)}$($apuesta_spago_s)^{\#(subseq(eventos,0,0),F)} \equiv$\\
 	\vspace{2mm}
-	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(\lvacia,T)}$($apuesta_spago_s)^{\#(\lvacia,F)}\equiv$ \\
+	$res= recurso$ $\wedge$ i=0  $\implica$  True $ \wedge$ $res=recurso$($apuesta_cpago_c)^{\#(\lvacia,T)}$($apuesta_spago_s)^{\#(\lvacia,F)} \equiv$ \\
 	\vspace{2mm}
 	$res= recurso$ $\wedge$ i=0  $\implica$ $res=recurso$($apuesta_cpago_c)^{0}$($apuesta_spago_s)^{0} \equiv $\\
 	\vspace{2mm}
@@ -317,9 +317,9 @@ Luego, hay que demostrar:
 	\vspace{6mm}
 	\textbf{Resuelvo wp(S4,I)}\\
 	\vspace{2mm}
-	$wp(S4,I)\equiv wp(i:=i+1,I)$$\equiv$\\
+	$wp(S4,I)\equiv wp(i:=i+1,I)$ $\equiv$\\
 	\vspace{2mm}
-	$def(i+1) \land I_{i+1}^{i}$$\equiv$\\
+	$def(i+1) \land I_{i+1}^{i}$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i+1 \leq |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$\\
 	\vspace{2mm}
@@ -327,7 +327,7 @@ Luego, hay que demostrar:
 	\vspace{6mm}
 	\textbf{Resuelvo wp(Sif,Qif)}\\
 	\vspace{2mm}
-	$wp(Sif,Qif)$$\equiv$\\
+	$wp(Sif,Qif)$ $\equiv$\\
 	\vspace{2mm}
 	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$\\
 	\vspace{6mm}
@@ -337,7 +337,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$wp (res:=(res*apuesta_c)pago_c,Qif)$ $\equiv$\\
 	\vspace{2mm}
-	$def(res:=(res*apuesta_c)pago_c) \land Qif_{(res*apuesta_c)pago_c}^{res}$$\equiv$\\
+	$def(res:=(res*apuesta_c)pago_c) \land Qif_{(res*apuesta_c)pago_c}^{res}$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_c)pago_c= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
 	\vspace{2mm}
@@ -359,7 +359,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$wp (res:=(res*apuesta_s)pago_s,Qif)$ $\equiv$\\
 	\vspace{2mm}
-	$def(res:=(res*apuesta_s)pago_s) \land Qif_{(res*apuesta_s)pago_s}^{res}$$\equiv$\\
+	$def(res:=(res*apuesta_s)pago_s) \land Qif_{(res*apuesta_s)pago_s}^{res}$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i+1 \leq |eventos| \wedge (res*apuesta_s)pago_s= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i+1),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i+1),F)}$ $\equiv$\\
 	\vspace{2mm}
@@ -377,11 +377,11 @@ Luego, hay que demostrar:
 	\vspace{6mm}
 	\textbf{(Juntando todo)} \\
 	\vspace{2mm}
-	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$$\equiv$\\
+	$def (eventos[i]:=true) \land ((eventos[i]=true \wedge wp (res:=(res*apuesta_c)pago_c,Qif))\vee (eventos[i]=false \wedge wp (res:=(res*apuesta_s)pago_s,Qif)))$ $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i < |eventos| \land ((eventos[i]=true \wedge resIf)\vee (eventos[i]=false \wedge resIf))$$\equiv$\\
+	$0 \leq i < |eventos| \land ((eventos[i]=true \wedge resIf)\vee (eventos[i]=false \wedge resIf))$ $\equiv$\\
 	\vspace{2mm}
-	$0 \leq i < |eventos| \wedge resIf \land (eventos[i]=true \vee eventos[i]=false)$$\equiv$\\
+	$0 \leq i < |eventos| \wedge resIf \land (eventos[i]=true \vee eventos[i]=false)$ $\equiv$\\
 	\vspace{2mm}
 	$0 \leq i < |eventos| \wedge res= recursos(apuesta_cpago_c)^{\# (subseq(eventos,0,i),T)}(apuesta_spago_s)^{\# (subseq(eventos,0,i),F)}$ \\
 	\vspace{4mm}
@@ -393,7 +393,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	\textbf{(Para simplificar escribo a I como $0\leq i \leq |eventos| \wedge res_i$)}\\
 	\vspace{2mm}
-	$0\leq i \leq |eventos| \wedge res_i \wedge $ $i < |eventos| \implica wp(S,I)$$\equiv$\\
+	$0\leq i \leq |eventos| \wedge res_i \wedge $ $i < |eventos| \implica wp(S,I)$ $\equiv$\\
 	\vspace{2mm}
 	$0\leq i <|eventos| \wedge res_i \implica wp(S,I)$ \\
 	\vspace{2mm}
@@ -514,7 +514,7 @@ Luego, hay que demostrar:
 \vspace{6mm}
 \textbf{Volviendo al principio, queriamos demostrar}:\\
 \vspace{2mm}
-$P \implica wp(S,Q) \equiv P\implica wp(S1;S2;S3,Q)$$ \equiv$\\
+$P \implica wp(S,Q) \equiv P\implica wp(S1;S2;S3,Q)$ $ \equiv$\\
 \vspace{2mm}
 $P\implica wp(S1;S2,wp(S3,Q)) \equiv P\implica wp(S1;S2,PC) \equiv P\implica wp(S1,wp(S2,PC)) $\\
 \vspace{4mm}
@@ -522,25 +522,25 @@ $P\implica wp(S1;S2,wp(S3,Q)) \equiv P\implica wp(S1;S2,PC) \equiv P\implica wp(
 \vspace{4mm}
 \textbf{Resuelvo primero wp(S2,PC)}\\
 \vspace{2mm}
-$wp(S2,PC) \equiv wp(i:=0,i=0 \wedge res=recurso)$$\equiv$\\
+$wp(S2,PC) \equiv wp(i:=0,i=0 \wedge res=recurso)$ $\equiv$\\
 \vspace{2mm}
-$def (0) \wedge PC_{0}^{i}$$\equiv$\\
+$def (0) \wedge PC_{0}^{i}$ $\equiv$\\
 \vspace{2mm}
-$True \wedge 0=0 \wedge res=recurso$$\equiv$\\
+$True \wedge 0=0 \wedge res=recurso$ $\equiv$\\
 \vspace{2mm}
 $res=recurso$\\
 \vspace{4mm}
 \textbf{Resuelvo wp(S1,res=recurso)}\\
 \vspace{2mm}
-$wp(res:=recurso,res=recurso)$$\equiv$\\
+$wp(res:=recurso,res=recurso)$ $\equiv$\\
 \vspace{2mm}
-$def(recurso) \wedge (res=recurso)_{recurso}^{res}$$\equiv$\\
+$def(recurso) \wedge (res=recurso)_{recurso}^{res}$ $\equiv$\\
 \vspace{2mm}
-$recurso=recurso$$\equiv$\\
+$recurso=recurso$ $\equiv$\\
 \vspace{2mm}
 $True$\\
 \vspace{4mm}
-\textbf{Luego wp(S,Q)$\equiv$ True}\\
+\textbf{Luego wp(S,Q) $\equiv$ True}\\
 \vspace{4mm}
 \textbf{Ahora ya sabiendo cuanto vale wp(S,Q) podemos probar la validez de \{ P \}S\{ Q \}, es decir, que $P \implica wp(S,Q)$ vale.} \\
 \vspace{2mm}
