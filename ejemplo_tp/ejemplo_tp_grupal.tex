@@ -67,7 +67,7 @@
 }
 
 \pred{eventosValidos}{eventos: \TLista{\TLista{\nat}}, pagos: \TLista{\TLista{\float}}}{
-	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|eventos| \land 0\leq t <|eventos[i]| \implicaLuego eventos[i][t]<|pagos[i]|}}
+	\paraTodo[unalinea]{i}{\ent}{\paraTodo[unalinea]{t}{\ent}{0 \leq i<|eventos| \land 0\leq t <|eventos[i]| \implicaLuego 0 \leq eventos[i][t]<|pagos[i]|}}
 }
 
 \pred {seApuestaTodo}{apuestas:\TLista{\TLista{\float}}}{
@@ -111,13 +111,14 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 \end{proc}
 
 \pred {hayUnSoloMaximoLocal}{trayectoria: \TLista{\float}}{
-    \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \\ \neg \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
+    \existe[unalinea]{i}{\ent}{0 \leq i<|trayectoria| \yLuego esMaximoLocal(i, trayectoria) \land \\ 
+	\neg \existe[unalinea]{j}{\ent}{0 \leq j<|trayectoria| \yLuego j \neq i \land esMaximoLocal(j, trayectoria)}}}
 
 \pred {esMaximoLocal}{i: \ent, trayectoria: \TLista{\float}}{
     |trayectoria| = 1 \oLuego \\
 	(i = 0 \land trayectoria[0] > trayectoria[1]) \lor \\
 	(i = |trayectoria| - 1 \land trayectoria[|trayectoria| - 1] > trayectoria[|trayectoria| - 2]) \lor \\
-	(0 < i < |trayectoria| -1 \yLuego trayectoria[i - 1] < trayectoria[i] >trayectoria[i + 1])}
+	(0 < i < |trayectoria| -1 \yLuego trayectoria[i - 1] < trayectoria[i] \land trayectoria[i] >trayectoria[i + 1])}
 
 \subsection{individuoDecideSiCooperarONo}
 
@@ -125,7 +126,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
  \In apuestas: \TLista{\TLista{\float}}, \In pagos: \TLista{\TLista{\float}}, \In eventos: \TLista{\TLista{\nat}}}{}
 	\requiere{\\
 		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
-		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]| \land |eventos[i]| > 0} \yLuego \\
 		eventosValidos(eventos, pagos) \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
@@ -190,7 +191,7 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	
 	\requiere{\\
 		|pagos|=|apuestas|=|eventos|=|cooperan|=|recursos| \land 0 \le individuo < |cooperan| \yLuego \\
-		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]|} \yLuego \\
+		\paraTodo[unalinea]{i}{\ent}{0 \le i < |apuestas| \implicaLuego |apuestas[i]| = |pagos[i]| \land |eventos[0]| = |eventos[i]| \land |eventos[i]| > 0} \yLuego \\
 		eventosValidos(eventos, pagos) \land \\
 		todosElementosDeLasListasPositivos(pagos) \land \\
 		todosElementosDeLasListasPositivos(apuestas) \land \\
@@ -226,7 +227,7 @@ pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {\\
 
 \pred{esApuestaValida}{i: \ent , apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}}{
 	|apuestas[i]| = |pagos[i]| \land ( \sum\limits_{k=0}^{|apuestas|-1}{apuestas[i][k]} = 1 ) \land 
-	\paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas[i]| \implicaLuego apuestas[i][j] \geq 0}   
+	\paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas[i]| \implicaLuego apuestas[i][j] > 0}   
 	% que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
 }
 
@@ -235,14 +236,14 @@ pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {\\
 Queremos probar  la validez de la siguiente tripla de Hoare:
 \textbf{\{ P \}S\{ Q \}} la cual es válida si solo si \textbf{{P $\implicaLuego$ wp(S,Q)}.}\\                                  
 \vspace{3mm}
-\textbf{P (precondición)}=$\{ apuesta_c + apuesta_s =1 \wedge pago_c>0 \wedge pago_s>0 \wedge apuesta_c>0 \wedge apuesta_s>0 \wedge recurso>0\}$\\
+\textbf{P (precondición)} $\equiv \{ apuesta_c + apuesta_s =1 \wedge pago_c>0 \wedge pago_s>0 \wedge apuesta_c>0 \wedge apuesta_s>0 \wedge recurso>0\}$\\
 \vspace{3mm}
-\textbf{Q (postcondición)}=\{res=recurso($apuesta_cpago_c)^{\#(eventos,T)}$($apuesta_spago_s)^{\#(eventos,F)}$\}\\
+\textbf{Q (postcondición)} $\equiv$ \{res=recurso($apuesta_cpago_c)^{\#(eventos,T)}$($apuesta_spago_s)^{\#(eventos,F)}$\}\\
 \vspace{3mm}
 Nótese que \#$(eventos, T)$ es la notación abreviada del auxiliar {\normalfont\ttfamily\#apariciones$(eventos, T)$} 
 que se definió en la teórica. \\
 \vspace{3mm}
-\textbf{S (programa)}=
+\textbf{S (programa)} $\equiv$
 \begin{lstlisting}
 	res := recurso;
 	i := 0;
@@ -279,7 +280,7 @@ Luego, queriamos probar que P $\implicaLuego$ wp(S,Q). Esto es lo mismo que prob
 \vspace{3mm}
 Primero debemos hallar \textbf{wp(S1;S2;S3,Q) $\equiv$ wp(S1;S2,wp(S3,Q))}.\\
 \vspace{3mm}
-\textbf{wp(S3,Q)} = PC (precondición del ciclo) = \{res = recurso $\wedge$ i=0\}\\
+\textbf{wp(S3,Q)} $\equiv$ PC (precondición del ciclo) $\equiv$ \{res = recurso $\wedge$ i=0\}\\
 \vspace{3mm}
 La PC la planteamos a partir de la definición del ciclo. 
 Nuestras demostraciones no pueden asegurar que esta PC es la más débil, 
@@ -333,7 +334,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	\textbf{Primero resuelvo wp(S,I)} \\
 	\vspace{2mm}
-	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
+	(S = S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
 	\textbf{Luego, wp(S,I) $\equiv$ wp(Sif;S4,I) $\equiv$ wp(Sif, wp(S4,I))} \\
 	\vspace{6mm}
@@ -419,7 +420,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	$0\leq i <|eventos| \wedge res_i \implica wp(S,I)$ \\
 	\vspace{2mm}
-	\textbf{Esto es verdad ya que wp(S,I)$\equiv$ $0\leq i <|eventos| \wedge resIf $ ($resIf=res_i$)}\\
+	\textbf{Esto es verdad ya que wp(S,I) $\equiv$ $0\leq i <|eventos| \wedge resIf $ ($resIf=res_i$)}\\
 	\vspace{4mm}
 	\textbf {Luego, queda demostrado que $\{ I \wedge B \}S\{ I \}$ vale.}
 
@@ -450,7 +451,7 @@ Luego, hay que demostrar:
 	\vspace{2mm}
 	\textbf{Resuelvo primero wp(S,$fv<v_0$)}\\
 	\vspace{2mm}
-	(S= S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
+	(S = S3 y dentro de S3 tenemos a Sif (parte del programa que contiene al IfThenElse) y a S4 = i:=i+1).\\
 	\vspace{2mm}
 	\textbf{Luego, wp(S,$fv<v_0$) $\equiv$ wp(Sif;S4,$fv<v_0$) $\equiv$ wp(Sif, wp(S4,$fv<v_0$))} \\
 	\vspace{6mm}
