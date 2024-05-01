@@ -137,9 +137,9 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
 		\IfThenElse{cooperan[individuo] = \True \\}
-		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \ge 
+		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \\\ge 
 		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
-		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \le 
+		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \\\le 
 		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
 	}
 	% TODO si no hay eventos (tipo |eventos[individuo]| = 0) qué hacemos? pq divide los recursos 
