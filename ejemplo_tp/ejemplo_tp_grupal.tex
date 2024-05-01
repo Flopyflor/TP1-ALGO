@@ -113,6 +113,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \begin{proc}{trayectoriaExtrañaEscalera}{\In trayectoria: \TLista{\float}}{\bool}
 	\requiere{|trayectoria| \geq 1}
+	\requiere{\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectoria| \implicaLuego trayectoria[i] > 0}} %TODO: es mayor estricto??? (corrección TP)
 	\asegura{\res = true \iff hayUnSoloMaximoLocal(trayectoria)} 
 \end{proc}
 
