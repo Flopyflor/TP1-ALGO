@@ -140,6 +140,13 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		seApuestaTodo(apuestas) \land \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ 
 		}
+		\requiere{\\
+			\paraTodo[unalinea]{j}{\ent}{0 \le j < |apuestas| - 1 \implicaLuego |apuestas[j]| = |apuestas[j+1]|}\\
+		}
+		\requiere{\\
+			\paraTodo[unalinea]{j}{\ent}{0 \le j < |pagos| - 1 \implicaLuego |pagos[j]| = |pagos[j+1]|}\\
+		}
+
 		\asegura{ \\
 		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
@@ -205,7 +212,12 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 		seApuestaTodo(apuestas) \land \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |recursos| \implicaLuego recursos[i] > 0} \\ 
 		}
-	
+	\requiere{\\
+		\paraTodo[unalinea]{j}{\ent}{0 \le j < |apuestas| - 1 \implicaLuego |apuestas[j]| = |apuestas[j+1]|}\\
+		}
+	\requiere{\\
+		\paraTodo[unalinea]{j}{\ent}{0 \le j < |pagos| - 1 \implicaLuego |pagos[j]| = |pagos[j+1]|}\\
+	}
 	
 	\asegura{\\
 	esApuestaSimilar(individuo, apuestas, old(apuestas)) \yLuego \\
