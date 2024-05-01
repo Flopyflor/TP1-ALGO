@@ -52,7 +52,13 @@
 		todosElementosDeLasListasPositivos(apuestas) \land \\
 		eventosValidos(eventos, pagos) \land \\seApuestaTodo(apuestas)\\
 	}
-	
+	\requiere{\\
+		\paraTodo[unalinea]{j}{\ent}{0 \le j < |apuestas| - 1 \implicaLuego |apuestas[j]| = |apuestas[j+1]|}\\
+	}
+	\requiere{\\
+		\paraTodo[unalinea]{j}{\ent}{0 \le j < |pagos| - 1 \implicaLuego |pagos[j]| = |pagos[j+1]|}\\
+	}
+
 	\asegura{\\
 		|trayectorias| = |eventos| \yLuego \\
 		\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectorias| \implicaLuego |trayectorias[i]| = |eventos[0]|+1} \land \\
