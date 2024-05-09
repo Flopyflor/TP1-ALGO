@@ -150,11 +150,10 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		\asegura{ \\
 		|old(cooperan)| = |cooperan| \yLuego \\
 		soloSeActualizoElIndividuo(individuo, old(cooperan), cooperan) \land \\
-		\IfThenElse{cooperan[individuo] = \True \\}
-		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \\\ge 
-		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}
-		{fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \\\le 
-		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos) \\}\\
+		cooperan[individuo] = \\ \IfThenElse{ fondoDivididoEnTurno(|eventos[0]| - 1, eventos, cooperanSiCoopera(individuo, cooperan), recursos, pagos, apuestas) \\\ge 
+		recursosDeNoCooperadorEnTurno(|eventos[0]| - 1, individuo, eventos, pagos, apuestas, \\ cooperanSiNoCoopera(individuo, cooperan), recursos)}
+		{\True }
+		{\False}\\
 	}
 	% TODO si no hay eventos (tipo |eventos[individuo]| = 0) qué hacemos? pq divide los recursos 
 	% iniciales de los colaboradores y los suma, pero dudo que en el "turno -1" aplique el fondo
