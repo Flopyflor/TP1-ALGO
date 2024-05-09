@@ -197,6 +197,24 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	\sum\limits_{i=0}^{turno}{(fondoDivididoEnTurno(i, eventos, cooperan, recursos, pagos, apuestas)} *\\
  	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)} \text{)} 
 }
+\paragraph{Demostración}recursosDeNoCooperadorEnTurno\\
+$w_k = recursos[k]$\\
+$t_k = tasaEnTurno(k, individuo, pagos, apuestas, eventos)$\\
+$f_k = fondoDivididoEnTurno(k, eventos, cooperan, recursos, pagos, apuestas)$\\
+\\
+Tenemos que $w_n = w_{n-1} * t_n + f_n$ y queremos probar que vale nuestra fórmula: \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+\subparagraph{Caso Base}Probamos que vale para $n=0$
+\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+\[w_0 = w_0 * \prod\limits_{i=1}^{0}{t_i} + \sum\limits_{i=1}^{0}{(f_i * \prod\limits_{j=i+1}^{0}{t_j})}\]
+\[w_0 = w_0 * 1 + 0\]
+\[w_0 = w_0 \]
+\subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n-1$ y demostramos que entonces valdrá para $n$
+\[w_n = w_{n-1} * t_n + f_n\]
+\[w_n = (w_0 * \prod\limits_{i=1}^{n-1}{t_i} + \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}) * t_n + f_n\]
+\[w_n = w_0 * t_n * \prod\limits_{i=1}^{n-1}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
+\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
+\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+$Q.E.D$
 
 \subsection{individuoActualizaApuesta}
 
@@ -226,6 +244,7 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
 	dineroFinal(individuo, recursos , cooperan , apuestas , pagos , eventos)  \\
 	\geq dineroFinal(individuo, recursos , cooperan , s , pagos , eventos)}
 	}
+	
 
 
 \end{proc}
