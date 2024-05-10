@@ -207,13 +207,29 @@ Tenemos que $w_n = w_{n-1} * t_n + f_n$ y queremos probar que vale nuestra fórm
 \[w_0 = w_0 * \prod\limits_{i=1}^{0}{t_i} + \sum\limits_{i=1}^{0}{(f_i * \prod\limits_{j=i+1}^{0}{t_j})}\]
 \[w_0 = w_0 * 1 + 0\]
 \[w_0 = w_0 \]
-\subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n-1$ y demostramos que entonces valdrá para $n$
+\subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n-1$ y demostraremos que entonces valdrá para $n$
 \[w_n = w_{n-1} * t_n + f_n\]
 \[w_n = (w_0 * \prod\limits_{i=1}^{n-1}{t_i} + \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}) * t_n + f_n\]
 \[w_n = w_0 * t_n * \prod\limits_{i=1}^{n-1}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
 \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
 \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
 $Q.E.D$
+
+\paragraph{Demostración}fondoDivididoEnTurno\\
+$f_k = fondoDivididoEnTurno(k, eventos, cooperan, recursos, pagos, apuestas)$\\
+$r_c = recursosDeCooperadoresIniciales(cooperan, recursos)$\\ 
+$t_k = tasasDeCooperadores(k, cooperan, pagos, apuestas, eventos)$\\
+\\
+Tenemos que $f_{n+1} = f_n * t_{n+1}$ y queremos probar que vale nuestra fórmula: \[f_n = r_c *\prod\limits_{k=0}^{n}{t_k}\]
+
+\subparagraph{Caso Base} %TODO
+
+\subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n$ y demostraremos que entonces valdrá para $n+1$
+\[f_{n+1} = f_n * t_{n+1}\]
+\[f_{n+1} = (r_c * \prod\limits_{k=0}^{n}{t_k}) * t_{n+1}\]
+\[f_{n+1} = r_c * \prod\limits_{k=0}^{n+1}{t_k}\]
+$Q.E.D$
+
 
 \subsection{individuoActualizaApuesta}
 
