@@ -212,6 +212,7 @@ Tenemos que $w_n = w_{n-1} * t_n + f_n$ y queremos probar que vale nuestra fórm
 \[w_n = (w_0 * \prod\limits_{i=1}^{n-1}{t_i} + \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}) * t_n + f_n\]
 \[w_n = w_0 * t_n * \prod\limits_{i=1}^{n-1}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
 \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
+\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n * \sum\limits_{i=1}^{0}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}\]
 \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
 $Q.E.D$
 
