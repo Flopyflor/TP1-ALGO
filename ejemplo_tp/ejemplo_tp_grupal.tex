@@ -113,7 +113,7 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 
 \begin{proc}{trayectoriaExtrañaEscalera}{\In trayectoria: \TLista{\float}}{\bool}
 	\requiere{|trayectoria| \geq 1}
-	\requiere{\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectoria| \implicaLuego trayectoria[i] > 0}} %TODO: es mayor estricto??? (corrección TP)
+	\requiere{\paraTodo[unalinea]{i}{\ent}{0 \le i < |trayectoria| \implicaLuego trayectoria[i] > 0}}
 	\asegura{\res = true \iff hayUnSoloMaximoLocal(trayectoria)} 
 \end{proc}
 
@@ -155,8 +155,6 @@ eventos: \TLista{\TLista{\ent}}, trayectorias: {\TLista{\TLista{\float}}}, coope
 		{\True }
 		{\False}\\
 	}
-	% TODO si no hay eventos (tipo |eventos[individuo]| = 0) qué hacemos? pq divide los recursos 
-	% iniciales de los colaboradores y los suma, pero dudo que en el "turno -1" aplique el fondo
 
 \end{proc}
 \vspace{5mm}
@@ -197,23 +195,25 @@ pagos: \TLista{\TLista{\float}}, apuestas: \TLista{\TLista{\float}}, cooperan: \
  	\prod\limits_{j=i+1}^{turno}{tasaEnTurno(j, individuo, pagos, apuestas, eventos)} \text{)} 
 }
 \paragraph{Demostración}recursosDeNoCooperadorEnTurno\\
-$w_k = recursos[k]$\\
+$r_0 =$ recursos iniciales del individuo, $recursos[individuo]$\\
+$w_k =$ recursos del individuo al final del turno $k$\\
 $t_k = tasaEnTurno(k, individuo, pagos, apuestas, eventos)$\\
 $f_k = fondoDivididoEnTurno(k, eventos, cooperan, recursos, pagos, apuestas)$\\
 \\
-Tenemos que $w_n = w_{n-1} * t_n + f_n$ y queremos probar que vale nuestra fórmula: \[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
-\subparagraph{Caso Base}Probamos que vale para $n=0$
-\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
-\[w_0 = w_0 * \prod\limits_{i=1}^{0}{t_i} + \sum\limits_{i=1}^{0}{(f_i * \prod\limits_{j=i+1}^{0}{t_j})}\]
-\[w_0 = w_0 * 1 + 0\]
-\[w_0 = w_0 \]
+Tenemos que $w_n = w_{n-1} * t_n + f_n$ y que $w_{-1} = r_0$ (porque los recursos iniciales son los del individuo antes del primer evento, el evento 0)
+ y queremos probar que vale nuestra fórmula: \[w_n = r_0 * \prod\limits_{i=0}^{n}{t_i} + \sum\limits_{i=0}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+\subparagraph{Caso Base}Probamos que vale para $n=-1$
+\[w_n = r_0 * \prod\limits_{i=0}^{n}{t_i} + \sum\limits_{i=0}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+\[w_{-1} = r_0 * \prod\limits_{i=0}^{-1}{t_i} + \sum\limits_{i=0}^{-1}{(f_i * \prod\limits_{j=i+1}^{-1}{t_j})}\]
+\[w_{-1} = r_0 * 1 + 0\]
+\[w_{-1} = r_0 \]
 \subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n-1$ y demostraremos que entonces valdrá para $n$
 \[w_n = w_{n-1} * t_n + f_n\]
-\[w_n = (w_0 * \prod\limits_{i=1}^{n-1}{t_i} + \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}) * t_n + f_n\]
-\[w_n = w_0 * t_n * \prod\limits_{i=1}^{n-1}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
-\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
-\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n * \sum\limits_{i=1}^{0}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}\]
-\[w_n = w_0 * \prod\limits_{i=1}^{n}{t_i} + \sum\limits_{i=1}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
+\[w_n = (r_0 * \prod\limits_{i=1}^{n-1}{t_i} + \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}) * t_n + f_n\]
+\[w_n = r_0 * t_n * \prod\limits_{i=1}^{n-1}{t_i} + t_n * \sum\limits_{i=1}^{n-1}{(f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
+\[w_n = r_0 * \prod\limits_{i=0}^{n}{t_i} + \sum\limits_{i=0}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + f_n\]
+\[w_n = r_0 * \prod\limits_{i=0}^{n}{t_i} + \sum\limits_{i=0}^{n-1}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})} + \sum\limits_{i=n}^{n}{(t_n * f_i * \prod\limits_{j=i+1}^{n-1}{t_j})}\]
+\[w_n = r_0 * \prod\limits_{i=0}^{n}{t_i} + \sum\limits_{i=0}^{n}{(f_i * \prod\limits_{j=i+1}^{n}{t_j})}\]
 $Q.E.D$
 
 \paragraph{Demostración}fondoDivididoEnTurno\\
@@ -223,7 +223,7 @@ $t_k = tasasDeCooperadores(k, cooperan, pagos, apuestas, eventos)$\\
 La función auxiliar $t_k$ cumple la función de sumar, en determinado turno $k$, la tasa de cada cooperador y luego dividir el resultado total
 por la cantidad total de individuos.
 \\\\
-Tenemos que  $f_0 = r_c *t_0 ,  f_{n+1} = f_n * t_{n+1}$ y queremos probar que vale nuestra fórmula: \[f_n = r_c *\prod\limits_{k=0}^{n}{t_k}\]
+Tenemos que  $f_0 = r_c *t_0$, $f_{n+1} = f_n * t_{n+1}$ y queremos probar que vale nuestra fórmula: \[f_n = r_c *\prod\limits_{k=0}^{n}{t_k}\]
 
 \subparagraph{Caso Base} Uso de casos base $n=0$ y $n=1$\\
 
@@ -231,9 +231,9 @@ Tenemos que  $f_0 = r_c *t_0 ,  f_{n+1} = f_n * t_{n+1}$ y queremos probar que v
 caso 0:\\ %TODO nose como correr el caso 0 a la izquierda sin que tire error
 \[f_0 = r_c *\prod\limits_{k=0}^{0}{t_k}\]
 \[f_0 = r_c *t_0\] 
-caso 1:\\
+caso 1:\\ %TODO este caso creo que no hace falta ponerlo
 \[f_1 = r_c *\prod\limits_{k=0}^{1}{t_k}\]
-\[f_1 = r_c *\prod\limits_{k=0}^{1}{t_k}\] %TODO hace falta aclarar que se cumple la recursividad en un paso extra?
+\[f_1 = r_c *\prod\limits_{k=0}^{1}{t_k}\] %TODO ya dije q este paso lo sacaría, pero si lo querés dejar, esto no es demostración suficiente
 
 
 \subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n$ y demostraremos que entonces valdrá para $n+1$
@@ -293,7 +293,6 @@ pagos: \TLista{\TLista{\float}} , eventos: \TLista{\TLista{\nat}}}{\float} {\\
 \pred{esApuestaValida}{i: \ent , apuestas: \TLista{\TLista{\float}}, pagos: \TLista{\TLista{\float}}}{
 	|apuestas[i]| = |pagos[i]| \land ( \sum\limits_{k=0}^{|apuestas|-1}{apuestas[i][k]} = 1 ) \land 
 	\paraTodo[unalinea]{j}{\ent}{0 \leq j < |apuestas[i]| \implicaLuego apuestas[i][j] > 0}   
-	% que vea que se apuesta todo, y que el largo sea igual al de pagos, y que todas las apuestas sean positivas (mayores exclusivas a 0?)
 }
 
 \section{Ejercicio 2}
