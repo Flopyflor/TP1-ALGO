@@ -220,10 +220,21 @@ $Q.E.D$
 $f_k = fondoDivididoEnTurno(k, eventos, cooperan, recursos, pagos, apuestas)$\\
 $r_c = recursosDeCooperadoresIniciales(cooperan, recursos)$\\ 
 $t_k = tasasDeCooperadores(k, cooperan, pagos, apuestas, eventos)$\\
-\\
-Tenemos que $f_{n+1} = f_n * t_{n+1}$ y queremos probar que vale nuestra fórmula: \[f_n = r_c *\prod\limits_{k=0}^{n}{t_k}\]
+La función auxiliar $t_k$ cumple la función de sumar, en determinado turno $k$, la tasa de cada cooperador y luego dividir el resultado total
+por la cantidad total de individuos.
+\\\\
+Tenemos que  $f_0 = r_c *t_0 ,  f_{n+1} = f_n * t_{n+1}$ y queremos probar que vale nuestra fórmula: \[f_n = r_c *\prod\limits_{k=0}^{n}{t_k}\]
 
-\subparagraph{Caso Base} %TODO
+\subparagraph{Caso Base} Uso de casos base $n=0$ y $n=1$\\
+
+
+caso 0:\\ %TODO nose como correr el caso 0 a la izquierda sin que tire error
+\[f_0 = r_c *\prod\limits_{k=0}^{0}{t_k}\]
+\[f_0 = r_c *t_0\] 
+caso 1:\\
+\[f_1 = r_c *\prod\limits_{k=0}^{1}{t_k}\]
+\[f_1 = r_c *\prod\limits_{k=0}^{1}{t_k}\] %TODO hace falta aclarar que se cumple la recursividad en un paso extra?
+
 
 \subparagraph{Paso Inductivo}Asumimos que nuestra fórmula vale para $n$ y demostraremos que entonces valdrá para $n+1$
 \[f_{n+1} = f_n * t_{n+1}\]
